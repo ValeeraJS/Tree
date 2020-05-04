@@ -84,8 +84,12 @@
 			"build/Tree.module.js",
 			"build/Tree.legacy.js",
 			"build/Tree.legacy.min.js",
-			"build/Tree.legacy.module.js"
+			"build/Tree.legacy.module.js",
+			"src"
 		],
 		"directories": {}
+	},
+	"publishConfig": {
+		"access": "public"
 	}
 }
