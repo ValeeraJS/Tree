@@ -1,0 +1,173 @@
+@import "common.less";
+
+.list::-webkit-scrollbar {
+    width: 8px;
+    background-color: transparent;
+}
+
+.list::-webkit-scrollbar-thumb {
+    background-color: @colorNavLink;
+    border-radius: 4px;
+}
+
+.navigation {
+    position: fixed;
+    overflow: hidden;
+    min-width: @navWidth;
+    width:25%;
+    top:0;
+    left:0;
+    bottom:0;
+    background-color: @colorNavBg;
+
+    .menu-toggle {
+        display:none;
+    }
+
+    @media screen and (max-width:768px) {
+        & {
+            left: 0;
+            position: relative;
+            width: 100%;
+            overflow: auto;
+            .search,
+            .list {
+                display: none;
+                &.show {
+                    display: block;
+                    position: static;
+                }
+            }
+            .menu-toggle {
+                display: block;
+                position: absolute;
+                top: 10px;
+                right: 10px;
+            }
+        }
+    }
+
+    .applicationName {
+        margin: 0;
+        padding: 20px;
+        font-weight: bold;
+        white-space: nowrap;
+        color: @colorNavHighlight;
+        a {
+            color: @colorNavHighlight;
+        }
+    }
+
+    .search {
+        padding: 0 20px;
+        input {
+            background-color: @colorNavSearchBg;
+            color: @colorNavHighlight;
+            border-color: @colorNavBorder;
+        }
+    }
+
+    .list {
+        padding: 20px;
+        position: absolute;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        width: 100%;
+        top: 100px;
+        bottom: 0;
+    }
+
+    li.item {
+        margin-bottom: 8px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid @colorNavBorder;
+        overflow: hidden;
+        a {
+            color: @colorNavLink;
+            &:hover {
+                color: #fff;
+            }
+        }
+        .title {
+            display: block;
+            a {
+                display:block;
+                color: @colorNavNormal;
+                &:hover {
+                    color: @colorNavHighlight;
+                }
+            }
+            &.namespace a {
+                color: @colorTextInvert;
+            }
+            .namespaceTag {
+                display: inline-block;
+                border-radius: 3px;
+                background-color: @colorNavSubtitle;
+                color: @colorNavHighlight;
+                font-size: 70%;
+                padding: 2px 6px;
+                float:left;
+                margin-right: 10px;
+                pointer-events: none;
+            }
+        }
+
+        .subtitle {
+            margin: 10px 0;
+            font-weight: bold;
+            color: @colorNavSubtitle;
+            display: block;
+            letter-spacing: 0.05em;
+        }
+
+
+        ul {
+            & > li {
+                padding-left: 10px;
+                font-size: 0.9em;
+            }
+        }
+
+        .itemMembers li.parent a {
+            color: @colorNavSpecial;
+        }
+    }
+
+    .children {
+        li.item {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        li.notCurrent {
+            font-weight: normal;
+        }
+        li.current {
+            font-weight: bold;
+        }
+    }
+
+    // Hide everything by default
+    .item, .itemMembers, .itemMembers li {
+        display: none;
+    }
+
+    // If we aren't searching show the 
+    // all of the contents of current select item
+    &.not-searching .item {
+        display: block;
+        &.current {
+            .itemMembers, .itemMembers li {
+                display: block;
+            }
+        }
+    }
+
+    // If searching, only show matches
+    &.searching .item.match {
+        display: block;
+        .itemMembers.match, .itemMembers li.match {
+            display: block;
+        }
+    }
+}

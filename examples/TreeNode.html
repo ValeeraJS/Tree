@@ -1,0 +1,14 @@
+<script src="../build/Tree.js"></script>
+<script>
+    let a = new Tree.TreeNode("aaa");
+    let ab = new Tree.TreeNode("bbb");
+    let ac = new Tree.TreeNode("ccc");
+    let abd = new Tree.TreeNode("ddd");
+    let abe = new Tree.TreeNode("eee");
+
+    let acef = new Tree.TreeNode("fff");
+    let aceg = new Tree.TreeNode("ggg");
+    a.addNode(ab.addNode(abd).addNode(abe.addNode(acef).addNode(aceg))).addNode(ac);
+    console.log(a);
+
+</script>
