@@ -1,14 +1,14 @@
 import IAbstractTreeNode from "./interfaces/IAbstractTreeNode";
 import IVisitor from "./interfaces/IVisitor";
-export default class AbstractTreeNode<T> implements IAbstractTreeNode<T> {
-    parent: IAbstractTreeNode<T> | null;
-    children: Array<IAbstractTreeNode<T> | null>;
-    addNode(node: IAbstractTreeNode<T>): this;
-    depth(node?: IAbstractTreeNode<T>): number;
-    findLeaves(): IAbstractTreeNode<T>[];
-    findRoot(node?: IAbstractTreeNode<T>): IAbstractTreeNode<T>;
-    hasAncestor(node: IAbstractTreeNode<T>): boolean;
-    removeNode(node: IAbstractTreeNode<T>): this;
-    traverse(visitor: IVisitor<T>, rest?: any): this;
-    toArray(): IAbstractTreeNode<T>[];
+export default class AbstractTreeNode implements IAbstractTreeNode {
+    parent: IAbstractTreeNode | null;
+    children: Array<IAbstractTreeNode | null>;
+    addNode(node: IAbstractTreeNode): this;
+    depth(node?: IAbstractTreeNode): number;
+    findLeaves(): IAbstractTreeNode[];
+    findRoot(node?: IAbstractTreeNode): IAbstractTreeNode;
+    hasAncestor(node: IAbstractTreeNode): boolean;
+    removeNode(node: IAbstractTreeNode): this;
+    traverse(visitor: IVisitor, rest?: any): this;
+    toArray(): IAbstractTreeNode[];
 }

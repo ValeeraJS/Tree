@@ -34,12 +34,12 @@
 	            return 1;
 	        }
 	        else {
-	            let childrenDepth = [];
-	            for (let item of node.children) {
+	            const childrenDepth = [];
+	            for (const item of node.children) {
 	                item && childrenDepth.push(this.depth(item));
 	            }
 	            let max = 0;
-	            for (let item of childrenDepth) {
+	            for (const item of childrenDepth) {
 	                max = Math.max(max, item);
 	            }
 	            return 1 + max;
@@ -79,7 +79,7 @@
 	    traverse(visitor, rest) {
 	        visitor.enter && visitor.enter(this, rest);
 	        visitor.visit && visitor.visit(this, rest);
-	        for (let item of this.children) {
+	        for (const item of this.children) {
 	            item && item.traverse(visitor, rest);
 	        }
 	        visitor.leave && visitor.leave(this, rest);
