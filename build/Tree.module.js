@@ -87,12 +87,10 @@ class AbstractTreeNode {
 }
 
 class TreeNode extends AbstractTreeNode {
-    constructor(data) {
-        super();
+    constructor() {
+        super(...arguments);
         this.parent = null;
-        this.data = null;
         this.children = [];
-        this.data = data;
     }
 }
 

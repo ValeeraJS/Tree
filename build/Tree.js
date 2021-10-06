@@ -1,8 +1,8 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(global = global || self, factory(global.Tree = {}));
-}(this, (function (exports) { 'use strict';
+	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.Tree = {}));
+})(this, (function (exports) { 'use strict';
 
 	const FIND_LEAVES_VISITOR = {
 	    enter: (node, result) => {
@@ -93,12 +93,10 @@
 	}
 
 	class TreeNode extends AbstractTreeNode {
-	    constructor(data) {
-	        super();
+	    constructor() {
+	        super(...arguments);
 	        this.parent = null;
-	        this.data = null;
 	        this.children = [];
-	        this.data = data;
 	    }
 	}
 
@@ -219,4 +217,5 @@
 
 	Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+}));
+//# sourceMappingURL=Tree.js.map

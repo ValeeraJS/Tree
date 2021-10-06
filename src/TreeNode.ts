@@ -1,13 +1,8 @@
 import AbstractTreeNode from "./AbstractTreeNode";
 import ITreeNode from "./interfaces/ITreeNode";
 
-export default class TreeNode<T> extends AbstractTreeNode implements ITreeNode<T> {
-	public parent: ITreeNode<T> | null = null;
-	public data: T | null = null;
-	public children: Array<ITreeNode<T> | null> = [];
+export default class TreeNode extends AbstractTreeNode implements ITreeNode {
+	public parent: ITreeNode | null = null;
+	public children: Array<ITreeNode | null> = [];
 
-	public constructor(data: T) {
-		super();
-		this.data = data;
-	}
 }

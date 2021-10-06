@@ -14,13 +14,13 @@ export default {
 			format: 'umd',
 			name: 'Tree',
 			file: 'build/Tree.js',
-			sourceMap: true,
+			sourcemap: true,
 			indent: '\t'
 		},
 		{
 			format: 'es',
 			file: 'build/Tree.module.js',
-			sourceMap: true,
+			sourcemap: false,
 			indent: '\t'
 		}
 	]
