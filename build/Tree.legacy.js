@@ -59,127 +59,149 @@
 	        result.push(node);
 	    }
 	};
-	var AbstractTreeNode = /** @class */ (function () {
-	    function AbstractTreeNode() {
-	        this.parent = null;
-	        this.children = [];
-	    }
-	    AbstractTreeNode.prototype.addNode = function (node) {
-	        if (this.hasAncestor(node)) {
-	            throw new Error("The node added is one of the ancestors of current one.");
-	        }
-	        this.children.push(node);
-	        node.parent = this;
-	        return this;
-	    };
-	    AbstractTreeNode.prototype.depth = function (node) {
-	        var e_1, _a, e_2, _b;
-	        if (node === void 0) { node = this; }
-	        if (!node.children.length) {
-	            return 1;
-	        }
-	        else {
-	            var childrenDepth = [];
-	            try {
-	                for (var _c = __values(node.children), _d = _c.next(); !_d.done; _d = _c.next()) {
-	                    var item = _d.value;
-	                    item && childrenDepth.push(this.depth(item));
-	                }
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+	var mixin = function (Base) {
+	    var _a;
+	    if (Base === void 0) { Base = Object; }
+	    return _a = /** @class */ (function (_super) {
+	            __extends(TreeNode, _super);
+	            function TreeNode() {
+	                var _this = _super !== null && _super.apply(this, arguments) || this;
+	                _this.parent = null;
+	                _this.children = [];
+	                return _this;
 	            }
-	            catch (e_1_1) { e_1 = { error: e_1_1 }; }
-	            finally {
+	            TreeNode.addNode = function (node, child) {
+	                if (TreeNode.hasAncestor(node, child)) {
+	                    throw new Error("The node added is one of the ancestors of current one.");
+	                }
+	                node.children.push(child);
+	                child.parent = node;
+	                return node;
+	            };
+	            TreeNode.depth = function (node) {
+	                var e_1, _a, e_2, _b;
+	                if (!node.children.length) {
+	                    return 1;
+	                }
+	                else {
+	                    var childrenDepth = [];
+	                    try {
+	                        for (var _c = __values(node.children), _d = _c.next(); !_d.done; _d = _c.next()) {
+	                            var item = _d.value;
+	                            item && childrenDepth.push(this.depth(item));
+	                        }
+	                    }
+	                    catch (e_1_1) { e_1 = { error: e_1_1 }; }
+	                    finally {
+	                        try {
+	                            if (_d && !_d.done && (_a = _c.return)) _a.call(_c);
+	                        }
+	                        finally { if (e_1) throw e_1.error; }
+	                    }
+	                    var max = 0;
+	                    try {
+	                        for (var childrenDepth_1 = __values(childrenDepth), childrenDepth_1_1 = childrenDepth_1.next(); !childrenDepth_1_1.done; childrenDepth_1_1 = childrenDepth_1.next()) {
+	                            var item = childrenDepth_1_1.value;
+	                            max = Math.max(max, item);
+	                        }
+	                    }
+	                    catch (e_2_1) { e_2 = { error: e_2_1 }; }
+	                    finally {
+	                        try {
+	                            if (childrenDepth_1_1 && !childrenDepth_1_1.done && (_b = childrenDepth_1.return)) _b.call(childrenDepth_1);
+	                        }
+	                        finally { if (e_2) throw e_2.error; }
+	                    }
+	                    return 1 + max;
+	                }
+	            };
+	            TreeNode.findLeaves = function (node) {
+	                var result = [];
+	                TreeNode.traverse(node, FIND_LEAVES_VISITOR, result);
+	                return result;
+	            };
+	            TreeNode.findRoot = function (node) {
+	                if (node.parent) {
+	                    return this.findRoot(node.parent);
+	                }
+	                return node;
+	            };
+	            TreeNode.hasAncestor = function (node, ancestor) {
+	                if (!node.parent) {
+	                    return false;
+	                }
+	                else {
+	                    if (node.parent === ancestor) {
+	                        return true;
+	                    }
+	                    else {
+	                        return TreeNode.hasAncestor(node.parent, ancestor);
+	                    }
+	                }
+	            };
+	            TreeNode.removeNode = function (node, child) {
+	                if (node.children.includes(child)) {
+	                    node.children.splice(node.children.indexOf(child), 1);
+	                    child.parent = null;
+	                }
+	                return node;
+	            };
+	            TreeNode.toArray = function (node) {
+	                var result = [];
+	                TreeNode.traverse(node, ARRAY_VISITOR, result);
+	                return result;
+	            };
+	            TreeNode.traverse = function (node, visitor, rest) {
+	                var e_3, _a;
+	                visitor.enter && visitor.enter(node, rest);
+	                visitor.visit && visitor.visit(node, rest);
 	                try {
-	                    if (_d && !_d.done && (_a = _c.return)) _a.call(_c);
+	                    for (var _b = __values(node.children), _c = _b.next(); !_c.done; _c = _b.next()) {
+	                        var item = _c.value;
+	                        item && TreeNode.traverse(item, visitor, rest);
+	                    }
 	                }
-	                finally { if (e_1) throw e_1.error; }
-	            }
-	            var max = 0;
-	            try {
-	                for (var childrenDepth_1 = __values(childrenDepth), childrenDepth_1_1 = childrenDepth_1.next(); !childrenDepth_1_1.done; childrenDepth_1_1 = childrenDepth_1.next()) {
-	                    var item = childrenDepth_1_1.value;
-	                    max = Math.max(max, item);
+	                catch (e_3_1) { e_3 = { error: e_3_1 }; }
+	                finally {
+	                    try {
+	                        if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+	                    }
+	                    finally { if (e_3) throw e_3.error; }
 	                }
-	            }
-	            catch (e_2_1) { e_2 = { error: e_2_1 }; }
-	            finally {
-	                try {
-	                    if (childrenDepth_1_1 && !childrenDepth_1_1.done && (_b = childrenDepth_1.return)) _b.call(childrenDepth_1);
-	                }
-	                finally { if (e_2) throw e_2.error; }
-	            }
-	            return 1 + max;
-	        }
-	    };
-	    AbstractTreeNode.prototype.findLeaves = function () {
-	        var result = [];
-	        this.traverse(FIND_LEAVES_VISITOR, result);
-	        return result;
-	    };
-	    AbstractTreeNode.prototype.findRoot = function (node) {
-	        if (node === void 0) { node = this; }
-	        if (node.parent) {
-	            return this.findRoot(node.parent);
-	        }
-	        return node;
-	    };
-	    AbstractTreeNode.prototype.hasAncestor = function (node) {
-	        if (!this.parent) {
-	            return false;
-	        }
-	        else {
-	            if (this.parent === node) {
-	                return true;
-	            }
-	            else {
-	                return this.parent.hasAncestor(node);
-	            }
-	        }
-	    };
-	    AbstractTreeNode.prototype.removeNode = function (node) {
-	        if (this.children.includes(node)) {
-	            this.children.splice(this.children.indexOf(node), 1);
-	            node.parent = null;
-	        }
-	        return this;
-	    };
-	    AbstractTreeNode.prototype.traverse = function (visitor, rest) {
-	        var e_3, _a;
-	        visitor.enter && visitor.enter(this, rest);
-	        visitor.visit && visitor.visit(this, rest);
-	        try {
-	            for (var _b = __values(this.children), _c = _b.next(); !_c.done; _c = _b.next()) {
-	                var item = _c.value;
-	                item && item.traverse(visitor, rest);
-	            }
-	        }
-	        catch (e_3_1) { e_3 = { error: e_3_1 }; }
-	        finally {
-	            try {
-	                if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
-	            }
-	            finally { if (e_3) throw e_3.error; }
-	        }
-	        visitor.leave && visitor.leave(this, rest);
-	        return this;
-	    };
-	    AbstractTreeNode.prototype.toArray = function () {
-	        var result = [];
-	        this.traverse(ARRAY_VISITOR, result);
-	        return result;
-	    };
-	    return AbstractTreeNode;
-	}());
-
-	var TreeNode = /** @class */ (function (_super) {
-	    __extends(TreeNode, _super);
-	    function TreeNode() {
-	        var _this = _super !== null && _super.apply(this, arguments) || this;
-	        _this.parent = null;
-	        _this.children = [];
-	        return _this;
-	    }
-	    return TreeNode;
-	}(AbstractTreeNode));
+	                visitor.leave && visitor.leave(node, rest);
+	                return node;
+	            };
+	            TreeNode.prototype.addNode = function (node) {
+	                return TreeNode.addNode(this, node);
+	            };
+	            TreeNode.prototype.depth = function () {
+	                return TreeNode.depth(this);
+	            };
+	            TreeNode.prototype.findLeaves = function () {
+	                return TreeNode.findLeaves(this);
+	            };
+	            TreeNode.prototype.findRoot = function () {
+	                return TreeNode.findRoot(this);
+	            };
+	            TreeNode.prototype.hasAncestor = function (ancestor) {
+	                return TreeNode.hasAncestor(this, ancestor);
+	            };
+	            TreeNode.prototype.removeNode = function (child) {
+	                return TreeNode.removeNode(this, child);
+	            };
+	            TreeNode.prototype.toArray = function () {
+	                return TreeNode.toArray(this);
+	            };
+	            TreeNode.prototype.traverse = function (visitor, rest) {
+	                return TreeNode.traverse(this, visitor, rest);
+	            };
+	            return TreeNode;
+	        }(Base)),
+	        _a.mixin = mixin,
+	        _a;
+	};
+	var TreeNode = mixin(Object);
 
 	var tmpNode;
 	var AbstractBinaryTreeNode = /** @class */ (function (_super) {
@@ -303,8 +325,7 @@
 	    return AbstractBinaryTreeNode;
 	}(TreeNode));
 
-	exports.AbstractBinaryTreeNode = AbstractBinaryTreeNode;
-	exports.AbstractTreeNode = AbstractTreeNode;
+	exports.BinaryTreeNode = AbstractBinaryTreeNode;
 	exports.TreeNode = TreeNode;
 
 	Object.defineProperty(exports, '__esModule', { value: true });

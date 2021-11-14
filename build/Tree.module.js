@@ -10,89 +10,113 @@ const ARRAY_VISITOR = {
         result.push(node);
     }
 };
-class AbstractTreeNode {
-    constructor() {
-        this.parent = null;
-        this.children = [];
-    }
-    addNode(node) {
-        if (this.hasAncestor(node)) {
-            throw new Error("The node added is one of the ancestors of current one.");
-        }
-        this.children.push(node);
-        node.parent = this;
-        return this;
-    }
-    depth(node = this) {
-        if (!node.children.length) {
-            return 1;
-        }
-        else {
-            const childrenDepth = [];
-            for (const item of node.children) {
-                item && childrenDepth.push(this.depth(item));
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+const mixin = (Base = Object) => {
+    var _a;
+    return _a = class TreeNode extends Base {
+            constructor() {
+                super(...arguments);
+                this.parent = null;
+                this.children = [];
             }
-            let max = 0;
-            for (const item of childrenDepth) {
-                max = Math.max(max, item);
+            static addNode(node, child) {
+                if (TreeNode.hasAncestor(node, child)) {
+                    throw new Error("The node added is one of the ancestors of current one.");
+                }
+                node.children.push(child);
+                child.parent = node;
+                return node;
             }
-            return 1 + max;
-        }
-    }
-    findLeaves() {
-        const result = [];
-        this.traverse(FIND_LEAVES_VISITOR, result);
-        return result;
-    }
-    findRoot(node = this) {
-        if (node.parent) {
-            return this.findRoot(node.parent);
-        }
-        return node;
-    }
-    hasAncestor(node) {
-        if (!this.parent) {
-            return false;
-        }
-        else {
-            if (this.parent === node) {
-                return true;
+            static depth(node) {
+                if (!node.children.length) {
+                    return 1;
+                }
+                else {
+                    const childrenDepth = [];
+                    for (const item of node.children) {
+                        item && childrenDepth.push(this.depth(item));
+                    }
+                    let max = 0;
+                    for (const item of childrenDepth) {
+                        max = Math.max(max, item);
+                    }
+                    return 1 + max;
+                }
             }
-            else {
-                return this.parent.hasAncestor(node);
+            static findLeaves(node) {
+                const result = [];
+                TreeNode.traverse(node, FIND_LEAVES_VISITOR, result);
+                return result;
             }
-        }
-    }
-    removeNode(node) {
-        if (this.children.includes(node)) {
-            this.children.splice(this.children.indexOf(node), 1);
-            node.parent = null;
-        }
-        return this;
-    }
-    traverse(visitor, rest) {
-        visitor.enter && visitor.enter(this, rest);
-        visitor.visit && visitor.visit(this, rest);
-        for (const item of this.children) {
-            item && item.traverse(visitor, rest);
-        }
-        visitor.leave && visitor.leave(this, rest);
-        return this;
-    }
-    toArray() {
-        const result = [];
-        this.traverse(ARRAY_VISITOR, result);
-        return result;
-    }
-}
-
-class TreeNode extends AbstractTreeNode {
-    constructor() {
-        super(...arguments);
-        this.parent = null;
-        this.children = [];
-    }
-}
+            static findRoot(node) {
+                if (node.parent) {
+                    return this.findRoot(node.parent);
+                }
+                return node;
+            }
+            static hasAncestor(node, ancestor) {
+                if (!node.parent) {
+                    return false;
+                }
+                else {
+                    if (node.parent === ancestor) {
+                        return true;
+                    }
+                    else {
+                        return TreeNode.hasAncestor(node.parent, ancestor);
+                    }
+                }
+            }
+            static removeNode(node, child) {
+                if (node.children.includes(child)) {
+                    node.children.splice(node.children.indexOf(child), 1);
+                    child.parent = null;
+                }
+                return node;
+            }
+            static toArray(node) {
+                const result = [];
+                TreeNode.traverse(node, ARRAY_VISITOR, result);
+                return result;
+            }
+            static traverse(node, visitor, rest) {
+                visitor.enter && visitor.enter(node, rest);
+                visitor.visit && visitor.visit(node, rest);
+                for (const item of node.children) {
+                    item && TreeNode.traverse(item, visitor, rest);
+                }
+                visitor.leave && visitor.leave(node, rest);
+                return node;
+            }
+            addNode(node) {
+                return TreeNode.addNode(this, node);
+            }
+            depth() {
+                return TreeNode.depth(this);
+            }
+            findLeaves() {
+                return TreeNode.findLeaves(this);
+            }
+            findRoot() {
+                return TreeNode.findRoot(this);
+            }
+            hasAncestor(ancestor) {
+                return TreeNode.hasAncestor(this, ancestor);
+            }
+            removeNode(child) {
+                return TreeNode.removeNode(this, child);
+            }
+            toArray() {
+                return TreeNode.toArray(this);
+            }
+            traverse(visitor, rest) {
+                return TreeNode.traverse(this, visitor, rest);
+            }
+        },
+        _a.mixin = mixin,
+        _a;
+};
+var TreeNode = mixin(Object);
 
 let tmpNode;
 class AbstractBinaryTreeNode extends TreeNode {
@@ -205,4 +229,4 @@ class AbstractBinaryTreeNode extends TreeNode {
     }
 }
 
-export { AbstractBinaryTreeNode, AbstractTreeNode, TreeNode };
+export { AbstractBinaryTreeNode as BinaryTreeNode, TreeNode };

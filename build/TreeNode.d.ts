@@ -1,6 +1,72 @@
-import AbstractTreeNode from "./AbstractTreeNode";
-import ITreeNode from "./interfaces/ITreeNode";
-export default class TreeNode extends AbstractTreeNode implements ITreeNode {
-    parent: ITreeNode | null;
-    children: Array<ITreeNode | null>;
-}
+import ITreeNode, { ITreeNodeData } from "./interfaces/ITreeNode";
+import IVisitor from "./interfaces/IVisitor";
+declare type Constructor<T = {}> = new (...a: any[]) => T;
+export declare const mixin: <TBase extends Constructor<{}>>(Base?: TBase) => {
+    new (...a: any[]): {
+        parent: ITreeNode | null;
+        children: Array<ITreeNode | null>;
+        addNode(node: ITreeNodeData): this;
+        depth(): number;
+        findLeaves(): ITreeNodeData[];
+        findRoot(): ITreeNodeData;
+        hasAncestor(ancestor: ITreeNodeData): boolean;
+        removeNode(child: ITreeNodeData): this;
+        toArray(): ITreeNodeData[];
+        traverse(visitor: IVisitor, rest?: any): this;
+    };
+    mixin: any;
+    addNode(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData;
+    depth(node: ITreeNodeData): number;
+    findLeaves(node: ITreeNodeData): ITreeNodeData[];
+    findRoot(node: ITreeNodeData): ITreeNodeData;
+    hasAncestor(node: ITreeNodeData, ancestor: ITreeNodeData): boolean;
+    removeNode(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData;
+    toArray(node: ITreeNodeData): ITreeNodeData[];
+    traverse(node: ITreeNodeData, visitor: IVisitor, rest?: any): ITreeNodeData;
+} & TBase;
+declare const _default: {
+    new (...a: any[]): {
+        parent: ITreeNode | null;
+        children: (ITreeNode | null)[];
+        addNode(node: ITreeNodeData): any;
+        depth(): number;
+        findLeaves(): ITreeNodeData[];
+        findRoot(): ITreeNodeData;
+        hasAncestor(ancestor: ITreeNodeData): boolean;
+        removeNode(child: ITreeNodeData): any;
+        toArray(): ITreeNodeData[];
+        traverse(visitor: IVisitor, rest?: any): any;
+    };
+    mixin: <TBase extends Constructor<{}>>(Base?: TBase) => {
+        new (...a: any[]): {
+            parent: ITreeNode | null;
+            children: (ITreeNode | null)[];
+            addNode(node: ITreeNodeData): any;
+            depth(): number;
+            findLeaves(): ITreeNodeData[];
+            findRoot(): ITreeNodeData;
+            hasAncestor(ancestor: ITreeNodeData): boolean;
+            removeNode(child: ITreeNodeData): any;
+            toArray(): ITreeNodeData[];
+            traverse(visitor: IVisitor, rest?: any): any;
+        };
+        mixin: any;
+        addNode(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData;
+        depth(node: ITreeNodeData): number;
+        findLeaves(node: ITreeNodeData): ITreeNodeData[];
+        findRoot(node: ITreeNodeData): ITreeNodeData;
+        hasAncestor(node: ITreeNodeData, ancestor: ITreeNodeData): boolean;
+        removeNode(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData;
+        toArray(node: ITreeNodeData): ITreeNodeData[];
+        traverse(node: ITreeNodeData, visitor: IVisitor, rest?: any): ITreeNodeData;
+    } & TBase;
+    addNode(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData;
+    depth(node: ITreeNodeData): number;
+    findLeaves(node: ITreeNodeData): ITreeNodeData[];
+    findRoot(node: ITreeNodeData): ITreeNodeData;
+    hasAncestor(node: ITreeNodeData, ancestor: ITreeNodeData): boolean;
+    removeNode(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData;
+    toArray(node: ITreeNodeData): ITreeNodeData[];
+    traverse(node: ITreeNodeData, visitor: IVisitor, rest?: any): ITreeNodeData;
+} & ObjectConstructor;
+export default _default;

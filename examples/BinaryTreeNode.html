@@ -1,7 +1,12 @@
 <script src="../build/Tree.min.js"></script>
 <script>
 
-    class NumberBinaryTreeNode extends Tree.AbstractBinaryTreeNode {
+    class NumberBinaryTreeNode extends Tree.BinaryTreeNode {
+        constructor(num) {
+            super();
+            this.data = num;
+        }
+
         compare(node) {
             return this.data < node.data;
         }

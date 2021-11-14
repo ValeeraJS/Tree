@@ -1,3 +1,4 @@
-export { default as AbstractTreeNode } from "./AbstractTreeNode";
-export { default as AbstractBinaryTreeNode } from "./AbstractBinaryTreeNode";
 export { default as TreeNode } from "./TreeNode";
+export { default as BinaryTreeNode } from "./BinaryTreeNode";
+export { default as ITreeNode, ITreeNodeData } from "./interfaces/ITreeNode";
+export { default as IVisitor } from "./interfaces/IVisitor";
