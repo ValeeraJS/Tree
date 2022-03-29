@@ -1,13 +1,79 @@
-import TreeNode from "./TreeNode";
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import IBinaryTreeNode from "./interfaces/IBinaryTreeNode";
 import IVisitor from "./interfaces/IVisitor";
+import TreeNode from "./TreeNode";
 
 let tmpNode: null | IBinaryTreeNode;
 
-export default abstract class AbstractBinaryTreeNode extends TreeNode
-	implements IBinaryTreeNode {
+export type IComparer = (currentNode: IBinaryTreeNode, child: IBinaryTreeNode) => boolean;
+
+export default abstract class AbstractBinaryTreeNode extends TreeNode implements IBinaryTreeNode {
 	public children: Array<IBinaryTreeNode | null> = [null, null];
 	public parent: IBinaryTreeNode | null = null;
+	private comparer: IComparer;
+
+	public constructor(comparer: IComparer) {
+		super();
+
+		this.comparer = comparer;
+	}
+
+	public removeNode(node: IBinaryTreeNode): this {
+		if (this.children.includes(node)) {
+			this.children[this.children.indexOf(node)] = null;
+			node.parent = null;
+		}
+
+		return this;
+	}
+
+	public traverseInOrder(visitor: IVisitor, rest: any): this {
+		tmpNode = this.children[0];
+		visitor.enter?.(this, rest);
+		if (tmpNode) {
+			tmpNode.traverseInOrder(visitor, rest);
+		}
+		visitor.visit?.(this, rest);
+		tmpNode = this.children[1];
+		if (tmpNode) {
+			tmpNode.traverseInOrder(visitor, rest);
+		}
+		visitor.leave?.(this, rest);
+
+		return this;
+	}
+
+	public traversePostOrder(visitor: IVisitor, rest: any): this {
+		tmpNode = this.children[0];
+		visitor.enter?.(this, rest);
+		if (tmpNode) {
+			tmpNode.traversePostOrder(visitor, rest);
+		}
+		tmpNode = this.children[1];
+		if (tmpNode) {
+			tmpNode.traversePostOrder(visitor, rest);
+		}
+		visitor.visit?.(this, rest);
+		visitor.leave?.(this, rest);
+
+		return this;
+	}
+
+	public traversePreOrder(visitor: IVisitor, rest: any): this {
+		tmpNode = this.children[0];
+		visitor.enter?.(this, rest);
+		visitor.visit?.(this, rest);
+		if (tmpNode) {
+			tmpNode.traversePreOrder(visitor, rest);
+		}
+		tmpNode = this.children[1];
+		if (tmpNode) {
+			tmpNode.traversePreOrder(visitor, rest);
+		}
+		visitor.leave?.(this, rest);
+
+		return this;
+	}
 
 	public addNode(node: IBinaryTreeNode): this {
 		if (this.compare(node)) {
@@ -39,7 +105,9 @@ export default abstract class AbstractBinaryTreeNode extends TreeNode
 	 * 规定左孩子的对比为false，右孩子的对比为true
 	 * @param nodeAdded
 	 */
-	public abstract compare(nodeAdded: IBinaryTreeNode): boolean;
+	public compare(nodeAdded: IBinaryTreeNode): boolean {
+		return this.comparer(this, nodeAdded);
+	}
 
 	public get left(): IBinaryTreeNode | null {
 		return this.children[0];
@@ -57,15 +125,6 @@ export default abstract class AbstractBinaryTreeNode extends TreeNode
 		}
 	}
 
-	public removeNode(node: IBinaryTreeNode): this {
-		if (this.children.includes(node)) {
-			this.children[this.children.indexOf(node)] = null;
-			node.parent = null;
-		}
-
-		return this;
-	}
-
 	public get right(): IBinaryTreeNode | null {
 		return this.children[1];
 	}
@@ -80,53 +139,5 @@ export default abstract class AbstractBinaryTreeNode extends TreeNode
 		if (node) {
 			node.parent = this;
 		}
-	}
-
-	public traverseInOrder(visitor: IVisitor, rest: any): this {
-		tmpNode = this.children[0];
-		visitor.enter && visitor.enter(this, rest);
-		if (tmpNode) {
-			tmpNode.traverseInOrder(visitor, rest);
-		}
-		visitor.visit && visitor.visit(this, rest);
-		tmpNode = this.children[1];
-		if (tmpNode) {
-			tmpNode.traverseInOrder(visitor, rest);
-		}
-		visitor.leave && visitor.leave(this, rest);
-
-		return this;
-	}
-
-	public traversePostOrder(visitor: IVisitor, rest: any): this {
-		tmpNode = this.children[0];
-		visitor.enter && visitor.enter(this, rest);
-		if (tmpNode) {
-			tmpNode.traversePostOrder(visitor, rest);
-		}
-		tmpNode = this.children[1];
-		if (tmpNode) {
-			tmpNode.traversePostOrder(visitor, rest);
-		}
-		visitor.visit && visitor.visit(this, rest);
-		visitor.leave && visitor.leave(this, rest);
-
-		return this;
-	}
-
-	public traversePreOrder(visitor: IVisitor, rest: any): this {
-		tmpNode = this.children[0];
-		visitor.enter && visitor.enter(this, rest);
-		visitor.visit && visitor.visit(this, rest);
-		if (tmpNode) {
-			tmpNode.traversePreOrder(visitor, rest);
-		}
-		tmpNode = this.children[1];
-		if (tmpNode) {
-			tmpNode.traversePreOrder(visitor, rest);
-		}
-		visitor.leave && visitor.leave(this, rest);
-
-		return this;
 	}
 }

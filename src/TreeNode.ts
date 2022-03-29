@@ -2,7 +2,7 @@ import ITreeNode, { ITreeNodeData } from "./interfaces/ITreeNode";
 import IVisitor from "./interfaces/IVisitor";
 
 const FIND_LEAVES_VISITOR: IVisitor = {
-	enter: (node: ITreeNode, result: ITreeNode[]) => {
+	enter: (node: ITreeNodeData, result: ITreeNodeData[]) => {
 		if (!node.children.length) {
 			result.push(node);
 		}
@@ -10,7 +10,7 @@ const FIND_LEAVES_VISITOR: IVisitor = {
 };
 
 const ARRAY_VISITOR: IVisitor = {
-	enter: (node: ITreeNode, result: ITreeNode[]) => {
+	enter: (node: ITreeNodeData, result: ITreeNodeData[]) => {
 		result.push(node);
 	}
 };
@@ -18,13 +18,8 @@ const ARRAY_VISITOR: IVisitor = {
 type Constructor<T = {}> = new (...a: any[]) => T;
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const mixin = <TBase extends Constructor>(
-	Base: TBase = Object as any
-) => {
+export const mixin = <TBase extends Constructor>(Base: TBase = Object as any) => {
 	return class TreeNode extends Base implements ITreeNode {
-		public parent: ITreeNode | null = null;
-		public children: Array<ITreeNode | null> = [];
-
 		public static mixin = mixin;
 
 		public static addNode(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData {
@@ -103,15 +98,18 @@ export const mixin = <TBase extends Constructor>(
 		}
 
 		public static traverse(node: ITreeNodeData, visitor: IVisitor, rest?: any): ITreeNodeData {
-			visitor.enter && visitor.enter(node, rest);
-			visitor.visit && visitor.visit(node, rest);
+			visitor.enter?.(node, rest);
+			visitor.visit?.(node, rest);
 			for (const item of node.children) {
 				item && TreeNode.traverse(item, visitor, rest);
 			}
-			visitor.leave && visitor.leave(node, rest);
+			visitor.leave?.(node, rest);
 
 			return node;
 		}
+
+		public parent: ITreeNode | null = null;
+		public children: Array<ITreeNode | null> = [];
 
 		public addNode(node: ITreeNodeData): this {
 			return TreeNode.addNode(this, node) as this;
@@ -144,7 +142,7 @@ export const mixin = <TBase extends Constructor>(
 		public traverse(visitor: IVisitor, rest?: any): this {
 			return TreeNode.traverse(this, visitor, rest) as this;
 		}
-	}
-}
+	};
+};
 
 export default mixin(Object);

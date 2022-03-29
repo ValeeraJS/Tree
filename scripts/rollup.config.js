@@ -1,27 +1,27 @@
-import typescript from 'rollup-plugin-typescript2';
-import json from '@rollup/plugin-json';
+import json from "@rollup/plugin-json";
+import typescript from "rollup-plugin-typescript2";
 
 export default {
-	input: 'src/index.ts',
+	input: "src/index.ts",
+	output: [
+		{
+			file: "build/Tree.js",
+			format: "umd",
+			indent: "\t",
+			name: "Tree",
+			sourcemap: true
+		},
+		{
+			file: "build/Tree.module.js",
+			format: "es",
+			indent: "\t",
+			sourcemap: false
+		}
+	],
 	plugins: [
 		json(),
 		typescript({
-			tsconfig: './tsconfig.json'
+			tsconfig: "./tsconfig.json"
 		})
-	],
-	output: [
-		{
-			format: 'umd',
-			name: 'Tree',
-			file: 'build/Tree.js',
-			sourcemap: true,
-			indent: '\t'
-		},
-		{
-			format: 'es',
-			file: 'build/Tree.module.js',
-			sourcemap: false,
-			indent: '\t'
-		}
 	]
 };
