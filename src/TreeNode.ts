@@ -22,7 +22,7 @@ export const mixin = <TBase extends Constructor>(Base: TBase = Object as any) =>
 	return class TreeNode extends Base implements ITreeNode {
 		public static mixin = mixin;
 
-		public static addNode(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData {
+		public static addChild(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData {
 			if (TreeNode.hasAncestor(node, child)) {
 				throw new Error("The node added is one of the ancestors of current one.");
 			}
@@ -111,8 +111,8 @@ export const mixin = <TBase extends Constructor>(Base: TBase = Object as any) =>
 		public parent: ITreeNode | null = null;
 		public children: Array<ITreeNode | null> = [];
 
-		public addNode(node: ITreeNodeData): this {
-			return TreeNode.addNode(this, node) as this;
+		public addChild(node: ITreeNodeData): this {
+			return TreeNode.addChild(this, node) as this;
 		}
 
 		public depth(): number {

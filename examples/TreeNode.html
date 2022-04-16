@@ -1,14 +1,14 @@
-<script src="../build/Tree.min.js"></script>
+<script src="../build/Tree.js"></script>
 <script>
-    let a = new Tree.TreeNode("aaa");
-    let ab = new Tree.TreeNode("bbb");
-    let ac = new Tree.TreeNode("ccc");
-    let abd = new Tree.TreeNode("ddd");
-    let abe = new Tree.TreeNode("eee");
+    const a = new Tree.TreeNode("aaa");
+    const ab = new Tree.TreeNode("bbb");
+    const ac = new Tree.TreeNode("ccc");
+    const abd = new Tree.TreeNode("ddd");
+    const abe = new Tree.TreeNode("eee");
 
-    let acef = new Tree.TreeNode("fff");
-    let aceg = new Tree.TreeNode("ggg");
-    a.addNode(ab.addNode(abd).addNode(abe.addNode(acef).addNode(aceg))).addNode(ac);
+    const acef = new Tree.TreeNode("fff");
+    const aceg = new Tree.TreeNode("ggg");
+
+    a.addChild(ab.addChild(abd).addChild(abe.addChild(acef).addChild(aceg))).addChild(ac);
     console.log(a);
-
 </script>

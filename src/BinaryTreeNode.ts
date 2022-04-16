@@ -75,10 +75,10 @@ export default abstract class AbstractBinaryTreeNode extends TreeNode implements
 		return this;
 	}
 
-	public addNode(node: IBinaryTreeNode): this {
+	public addChild(node: IBinaryTreeNode): this {
 		if (this.compare(node)) {
 			if (this.children[1]) {
-				(this.children[1] as IBinaryTreeNode).addNode(node);
+				(this.children[1] as IBinaryTreeNode).addChild(node);
 			} else {
 				if (this.hasAncestor(node)) {
 					throw new Error("The node added is one of the ancestors of current one.");
@@ -88,7 +88,7 @@ export default abstract class AbstractBinaryTreeNode extends TreeNode implements
 			}
 		} else {
 			if (this.children[0]) {
-				(this.children[0] as IBinaryTreeNode).addNode(node);
+				(this.children[0] as IBinaryTreeNode).addChild(node);
 			} else {
 				if (this.hasAncestor(node)) {
 					throw new Error("The node added is one of the ancestors of current one.");

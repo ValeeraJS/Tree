@@ -11,7 +11,7 @@ export default abstract class AbstractBinaryTreeNode extends TreeNode implements
     traverseInOrder(visitor: IVisitor, rest: any): this;
     traversePostOrder(visitor: IVisitor, rest: any): this;
     traversePreOrder(visitor: IVisitor, rest: any): this;
-    addNode(node: IBinaryTreeNode): this;
+    addChild(node: IBinaryTreeNode): this;
     /**
      * 规定左孩子的对比为false，右孩子的对比为true
      * @param nodeAdded

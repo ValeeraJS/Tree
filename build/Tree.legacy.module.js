@@ -65,7 +65,7 @@ var mixin = function (Base) {
                 _this.children = [];
                 return _this;
             }
-            TreeNode.addNode = function (node, child) {
+            TreeNode.addChild = function (node, child) {
                 if (TreeNode.hasAncestor(node, child)) {
                     throw new Error("The node added is one of the ancestors of current one.");
                 }
@@ -148,26 +148,27 @@ var mixin = function (Base) {
             };
             TreeNode.traverse = function (node, visitor, rest) {
                 var e_3, _a;
-                visitor.enter && visitor.enter(node, rest);
-                visitor.visit && visitor.visit(node, rest);
+                var _b, _c, _d;
+                (_b = visitor.enter) === null || _b === void 0 ? void 0 : _b.call(visitor, node, rest);
+                (_c = visitor.visit) === null || _c === void 0 ? void 0 : _c.call(visitor, node, rest);
                 try {
-                    for (var _b = __values(node.children), _c = _b.next(); !_c.done; _c = _b.next()) {
-                        var item = _c.value;
+                    for (var _e = __values(node.children), _f = _e.next(); !_f.done; _f = _e.next()) {
+                        var item = _f.value;
                         item && TreeNode.traverse(item, visitor, rest);
                     }
                 }
                 catch (e_3_1) { e_3 = { error: e_3_1 }; }
                 finally {
                     try {
-                        if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+                        if (_f && !_f.done && (_a = _e.return)) _a.call(_e);
                     }
                     finally { if (e_3) throw e_3.error; }
                 }
-                visitor.leave && visitor.leave(node, rest);
+                (_d = visitor.leave) === null || _d === void 0 ? void 0 : _d.call(visitor, node, rest);
                 return node;
             };
-            TreeNode.prototype.addNode = function (node) {
-                return TreeNode.addNode(this, node);
+            TreeNode.prototype.addChild = function (node) {
+                return TreeNode.addChild(this, node);
             };
             TreeNode.prototype.depth = function () {
                 return TreeNode.depth(this);
@@ -200,16 +201,69 @@ var TreeNode = mixin(Object);
 var tmpNode;
 var AbstractBinaryTreeNode = /** @class */ (function (_super) {
     __extends(AbstractBinaryTreeNode, _super);
-    function AbstractBinaryTreeNode() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
+    function AbstractBinaryTreeNode(comparer) {
+        var _this = _super.call(this) || this;
         _this.children = [null, null];
         _this.parent = null;
+        _this.comparer = comparer;
         return _this;
     }
-    AbstractBinaryTreeNode.prototype.addNode = function (node) {
+    AbstractBinaryTreeNode.prototype.removeNode = function (node) {
+        if (this.children.includes(node)) {
+            this.children[this.children.indexOf(node)] = null;
+            node.parent = null;
+        }
+        return this;
+    };
+    AbstractBinaryTreeNode.prototype.traverseInOrder = function (visitor, rest) {
+        var _a, _b, _c;
+        tmpNode = this.children[0];
+        (_a = visitor.enter) === null || _a === void 0 ? void 0 : _a.call(visitor, this, rest);
+        if (tmpNode) {
+            tmpNode.traverseInOrder(visitor, rest);
+        }
+        (_b = visitor.visit) === null || _b === void 0 ? void 0 : _b.call(visitor, this, rest);
+        tmpNode = this.children[1];
+        if (tmpNode) {
+            tmpNode.traverseInOrder(visitor, rest);
+        }
+        (_c = visitor.leave) === null || _c === void 0 ? void 0 : _c.call(visitor, this, rest);
+        return this;
+    };
+    AbstractBinaryTreeNode.prototype.traversePostOrder = function (visitor, rest) {
+        var _a, _b, _c;
+        tmpNode = this.children[0];
+        (_a = visitor.enter) === null || _a === void 0 ? void 0 : _a.call(visitor, this, rest);
+        if (tmpNode) {
+            tmpNode.traversePostOrder(visitor, rest);
+        }
+        tmpNode = this.children[1];
+        if (tmpNode) {
+            tmpNode.traversePostOrder(visitor, rest);
+        }
+        (_b = visitor.visit) === null || _b === void 0 ? void 0 : _b.call(visitor, this, rest);
+        (_c = visitor.leave) === null || _c === void 0 ? void 0 : _c.call(visitor, this, rest);
+        return this;
+    };
+    AbstractBinaryTreeNode.prototype.traversePreOrder = function (visitor, rest) {
+        var _a, _b, _c;
+        tmpNode = this.children[0];
+        (_a = visitor.enter) === null || _a === void 0 ? void 0 : _a.call(visitor, this, rest);
+        (_b = visitor.visit) === null || _b === void 0 ? void 0 : _b.call(visitor, this, rest);
+        if (tmpNode) {
+            tmpNode.traversePreOrder(visitor, rest);
+        }
+        tmpNode = this.children[1];
+        if (tmpNode) {
+            tmpNode.traversePreOrder(visitor, rest);
+        }
+        (_c = visitor.leave) === null || _c === void 0 ? void 0 : _c.call(visitor, this, rest);
+        return this;
+    };
+    AbstractBinaryTreeNode.prototype.addChild = function (node) {
         if (this.compare(node)) {
             if (this.children[1]) {
-                this.children[1].addNode(node);
+                this.children[1].addChild(node);
             }
             else {
                 if (this.hasAncestor(node)) {
@@ -221,7 +275,7 @@ var AbstractBinaryTreeNode = /** @class */ (function (_super) {
         }
         else {
             if (this.children[0]) {
-                this.children[0].addNode(node);
+                this.children[0].addChild(node);
             }
             else {
                 if (this.hasAncestor(node)) {
@@ -232,6 +286,13 @@ var AbstractBinaryTreeNode = /** @class */ (function (_super) {
             }
         }
         return this;
+    };
+    /**
+     * 规定左孩子的对比为false，右孩子的对比为true
+     * @param nodeAdded
+     */
+    AbstractBinaryTreeNode.prototype.compare = function (nodeAdded) {
+        return this.comparer(this, nodeAdded);
     };
     Object.defineProperty(AbstractBinaryTreeNode.prototype, "left", {
         get: function () {
@@ -250,13 +311,6 @@ var AbstractBinaryTreeNode = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    AbstractBinaryTreeNode.prototype.removeNode = function (node) {
-        if (this.children.includes(node)) {
-            this.children[this.children.indexOf(node)] = null;
-            node.parent = null;
-        }
-        return this;
-    };
     Object.defineProperty(AbstractBinaryTreeNode.prototype, "right", {
         get: function () {
             return this.children[1];
@@ -274,48 +328,6 @@ var AbstractBinaryTreeNode = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    AbstractBinaryTreeNode.prototype.traverseInOrder = function (visitor, rest) {
-        tmpNode = this.children[0];
-        visitor.enter && visitor.enter(this, rest);
-        if (tmpNode) {
-            tmpNode.traverseInOrder(visitor, rest);
-        }
-        visitor.visit && visitor.visit(this, rest);
-        tmpNode = this.children[1];
-        if (tmpNode) {
-            tmpNode.traverseInOrder(visitor, rest);
-        }
-        visitor.leave && visitor.leave(this, rest);
-        return this;
-    };
-    AbstractBinaryTreeNode.prototype.traversePostOrder = function (visitor, rest) {
-        tmpNode = this.children[0];
-        visitor.enter && visitor.enter(this, rest);
-        if (tmpNode) {
-            tmpNode.traversePostOrder(visitor, rest);
-        }
-        tmpNode = this.children[1];
-        if (tmpNode) {
-            tmpNode.traversePostOrder(visitor, rest);
-        }
-        visitor.visit && visitor.visit(this, rest);
-        visitor.leave && visitor.leave(this, rest);
-        return this;
-    };
-    AbstractBinaryTreeNode.prototype.traversePreOrder = function (visitor, rest) {
-        tmpNode = this.children[0];
-        visitor.enter && visitor.enter(this, rest);
-        visitor.visit && visitor.visit(this, rest);
-        if (tmpNode) {
-            tmpNode.traversePreOrder(visitor, rest);
-        }
-        tmpNode = this.children[1];
-        if (tmpNode) {
-            tmpNode.traversePreOrder(visitor, rest);
-        }
-        visitor.leave && visitor.leave(this, rest);
-        return this;
-    };
     return AbstractBinaryTreeNode;
 }(TreeNode));
 

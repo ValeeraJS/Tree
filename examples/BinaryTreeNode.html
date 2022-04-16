@@ -1,42 +1,40 @@
-<script src="../build/Tree.min.js"></script>
+<script src="../build/Tree.js"></script>
 <script>
+class NumberBinaryTreeNode extends Tree.BinaryTreeNode {
+	constructor(num) {
+		super();
+		this.data = num;
+	}
 
-    class NumberBinaryTreeNode extends Tree.BinaryTreeNode {
-        constructor(num) {
-            super();
-            this.data = num;
-        }
+	compare(node) {
+		return this.data < node.data;
+	}
+}
 
-        compare(node) {
-            return this.data < node.data;
-        }
-    }
+const a1 = new NumberBinaryTreeNode(1);
+const a2 = new NumberBinaryTreeNode(2);
+const a3 = new NumberBinaryTreeNode(3);
+const a4 = new NumberBinaryTreeNode(4);
+const a5 = new NumberBinaryTreeNode(5);
+const a6 = new NumberBinaryTreeNode(6);
+const a7 = new NumberBinaryTreeNode(7);
 
-    let a1 = new NumberBinaryTreeNode(1);
-    let a2 = new NumberBinaryTreeNode(2);
-    let a3 = new NumberBinaryTreeNode(3);
-    let a4 = new NumberBinaryTreeNode(4);
-    let a5 = new NumberBinaryTreeNode(5);
-    let a6 = new NumberBinaryTreeNode(6);
-    let a7 = new NumberBinaryTreeNode(7);
-    
-    // a4.add(a1).add(a2).add(a3).add(a4).add(a5).add(a6).add(a7);
-    a4.addNode(a2).addNode(a5).addNode(a1).addNode(a3);
-    //     4
-    //   2   5
-    // 1   3
-    console.log(a4);
+// a4.add(a1).add(a2).add(a3).add(a4).add(a5).add(a6).add(a7);
+a4.addChild(a2).addChild(a5).addChild(a1).addChild(a3);
+//     4
+//   2   5
+// 1   3
+console.log(a4);
 
-    let visitor = {
-        enter: (node) => {
-            console.log("Enter :", node.data);
-        },
-        visit: (node) => {
-            console.log("Visit :", node.data);
-        },
-        leave: (node) => {
-            console.log("Leave :", node.data);
-        }
-    }
-
+const visitor = {
+	enter: (node) => {
+		console.log("Enter :", node.data);
+	},
+	visit: (node) => {
+		console.log("Visit :", node.data);
+	},
+	leave: (node) => {
+		console.log("Leave :", node.data);
+	}
+};
 </script>

@@ -5,7 +5,7 @@ export declare const mixin: <TBase extends Constructor<{}>>(Base?: TBase) => {
     new (...a: any[]): {
         parent: ITreeNode | null;
         children: Array<ITreeNode | null>;
-        addNode(node: ITreeNodeData): this;
+        addChild(node: ITreeNodeData): this;
         depth(): number;
         findLeaves(): ITreeNodeData[];
         findRoot(): ITreeNodeData;
@@ -15,7 +15,7 @@ export declare const mixin: <TBase extends Constructor<{}>>(Base?: TBase) => {
         traverse(visitor: IVisitor, rest?: any): this;
     };
     mixin: any;
-    addNode(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData;
+    addChild(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData;
     depth(node: ITreeNodeData): number;
     findLeaves(node: ITreeNodeData): ITreeNodeData[];
     findRoot(node: ITreeNodeData): ITreeNodeData;
@@ -28,7 +28,7 @@ declare const _default: {
     new (...a: any[]): {
         parent: ITreeNode | null;
         children: (ITreeNode | null)[];
-        addNode(node: ITreeNodeData): any;
+        addChild(node: ITreeNodeData): any;
         depth(): number;
         findLeaves(): ITreeNodeData[];
         findRoot(): ITreeNodeData;
@@ -41,7 +41,7 @@ declare const _default: {
         new (...a: any[]): {
             parent: ITreeNode | null;
             children: (ITreeNode | null)[];
-            addNode(node: ITreeNodeData): any;
+            addChild(node: ITreeNodeData): any;
             depth(): number;
             findLeaves(): ITreeNodeData[];
             findRoot(): ITreeNodeData;
@@ -51,7 +51,7 @@ declare const _default: {
             traverse(visitor: IVisitor, rest?: any): any;
         };
         mixin: any;
-        addNode(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData;
+        addChild(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData;
         depth(node: ITreeNodeData): number;
         findLeaves(node: ITreeNodeData): ITreeNodeData[];
         findRoot(node: ITreeNodeData): ITreeNodeData;
@@ -60,7 +60,7 @@ declare const _default: {
         toArray(node: ITreeNodeData): ITreeNodeData[];
         traverse(node: ITreeNodeData, visitor: IVisitor, rest?: any): ITreeNodeData;
     } & TBase;
-    addNode(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData;
+    addChild(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData;
     depth(node: ITreeNodeData): number;
     findLeaves(node: ITreeNodeData): ITreeNodeData[];
     findRoot(node: ITreeNodeData): ITreeNodeData;

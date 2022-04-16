@@ -8,7 +8,7 @@ export interface ITreeNodeData {
 }
 
 export default interface ITreeNode extends ITreeNodeData {
-	addNode: (node: ITreeNodeData | ITreeNode) => this;
+	addChild: (node: ITreeNodeData | ITreeNode) => this;
 	depth: (node: ITreeNodeData | ITreeNode) => number;
 	findLeaves: () => Array<ITreeNodeData | ITreeNode>;
 	findRoot: (node: ITreeNodeData | ITreeNode) => ITreeNodeData | ITreeNode;

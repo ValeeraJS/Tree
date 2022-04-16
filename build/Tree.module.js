@@ -14,7 +14,7 @@ const ARRAY_VISITOR = {
 const mixin = (Base = Object) => {
     return class TreeNode extends Base {
         static mixin = mixin;
-        static addNode(node, child) {
+        static addChild(node, child) {
             if (TreeNode.hasAncestor(node, child)) {
                 throw new Error("The node added is one of the ancestors of current one.");
             }
@@ -85,8 +85,8 @@ const mixin = (Base = Object) => {
         }
         parent = null;
         children = [];
-        addNode(node) {
-            return TreeNode.addNode(this, node);
+        addChild(node) {
+            return TreeNode.addChild(this, node);
         }
         depth() {
             return TreeNode.depth(this);
@@ -171,10 +171,10 @@ class AbstractBinaryTreeNode extends TreeNode {
         visitor.leave?.(this, rest);
         return this;
     }
-    addNode(node) {
+    addChild(node) {
         if (this.compare(node)) {
             if (this.children[1]) {
-                this.children[1].addNode(node);
+                this.children[1].addChild(node);
             }
             else {
                 if (this.hasAncestor(node)) {
@@ -186,7 +186,7 @@ class AbstractBinaryTreeNode extends TreeNode {
         }
         else {
             if (this.children[0]) {
-                this.children[0].addNode(node);
+                this.children[0].addChild(node);
             }
             else {
                 if (this.hasAncestor(node)) {
