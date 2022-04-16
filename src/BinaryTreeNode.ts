@@ -18,7 +18,7 @@ export default abstract class AbstractBinaryTreeNode extends TreeNode implements
 		this.comparer = comparer;
 	}
 
-	public removeNode(node: IBinaryTreeNode): this {
+	public removeChild(node: IBinaryTreeNode): this {
 		if (this.children.includes(node)) {
 			this.children[this.children.indexOf(node)] = null;
 			node.parent = null;
@@ -116,7 +116,7 @@ export default abstract class AbstractBinaryTreeNode extends TreeNode implements
 	public set left(node: IBinaryTreeNode | null) {
 		tmpNode = this.children[0];
 		if (tmpNode) {
-			this.removeNode(tmpNode);
+			this.removeChild(tmpNode);
 		}
 		this.children[0] = node;
 
@@ -132,7 +132,7 @@ export default abstract class AbstractBinaryTreeNode extends TreeNode implements
 	public set right(node: IBinaryTreeNode | null) {
 		tmpNode = this.children[1];
 		if (tmpNode) {
-			this.removeNode(tmpNode);
+			this.removeChild(tmpNode);
 		}
 		this.children[1] = node;
 

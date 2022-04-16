@@ -7,7 +7,7 @@ export default abstract class AbstractBinaryTreeNode extends TreeNode implements
     parent: IBinaryTreeNode | null;
     private comparer;
     constructor(comparer: IComparer);
-    removeNode(node: IBinaryTreeNode): this;
+    removeChild(node: IBinaryTreeNode): this;
     traverseInOrder(visitor: IVisitor, rest: any): this;
     traversePostOrder(visitor: IVisitor, rest: any): this;
     traversePreOrder(visitor: IVisitor, rest: any): this;

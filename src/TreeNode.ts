@@ -80,7 +80,7 @@ export const mixin = <TBase extends Constructor>(Base: TBase = Object as any) =>
 			}
 		}
 
-		public static removeNode(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData {
+		public static removeChild(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData {
 			if (node.children.includes(child)) {
 				node.children.splice(node.children.indexOf(child), 1);
 				child.parent = null;
@@ -131,8 +131,8 @@ export const mixin = <TBase extends Constructor>(Base: TBase = Object as any) =>
 			return TreeNode.hasAncestor(this, ancestor);
 		}
 
-		public removeNode(child: ITreeNodeData): this {
-			return TreeNode.removeNode(this, child) as this;
+		public removeChild(child: ITreeNodeData): this {
+			return TreeNode.removeChild(this, child) as this;
 		}
 
 		public toArray(): ITreeNodeData[] {

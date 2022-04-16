@@ -68,7 +68,7 @@
 	                }
 	            }
 	        }
-	        static removeNode(node, child) {
+	        static removeChild(node, child) {
 	            if (node.children.includes(child)) {
 	                node.children.splice(node.children.indexOf(child), 1);
 	                child.parent = null;
@@ -106,8 +106,8 @@
 	        hasAncestor(ancestor) {
 	            return TreeNode.hasAncestor(this, ancestor);
 	        }
-	        removeNode(child) {
-	            return TreeNode.removeNode(this, child);
+	        removeChild(child) {
+	            return TreeNode.removeChild(this, child);
 	        }
 	        toArray() {
 	            return TreeNode.toArray(this);
@@ -128,7 +128,7 @@
 	        super();
 	        this.comparer = comparer;
 	    }
-	    removeNode(node) {
+	    removeChild(node) {
 	        if (this.children.includes(node)) {
 	            this.children[this.children.indexOf(node)] = null;
 	            node.parent = null;
@@ -217,7 +217,7 @@
 	    set left(node) {
 	        tmpNode = this.children[0];
 	        if (tmpNode) {
-	            this.removeNode(tmpNode);
+	            this.removeChild(tmpNode);
 	        }
 	        this.children[0] = node;
 	        if (node) {
@@ -230,7 +230,7 @@
 	    set right(node) {
 	        tmpNode = this.children[1];
 	        if (tmpNode) {
-	            this.removeNode(tmpNode);
+	            this.removeChild(tmpNode);
 	        }
 	        this.children[1] = node;
 	        if (node) {

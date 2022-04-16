@@ -13,6 +13,6 @@ export default interface ITreeNode extends ITreeNodeData {
 	findLeaves: () => Array<ITreeNodeData | ITreeNode>;
 	findRoot: (node: ITreeNodeData | ITreeNode) => ITreeNodeData | ITreeNode;
 	hasAncestor: (node: ITreeNodeData | ITreeNode) => boolean;
-	removeNode: (node: ITreeNodeData | ITreeNode) => this;
+	removeChild: (node: ITreeNodeData | ITreeNode) => this;
 	traverse: (visitor: IVisitor, depth: number) => any;
 }

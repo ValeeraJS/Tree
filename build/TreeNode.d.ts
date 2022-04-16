@@ -10,7 +10,7 @@ export declare const mixin: <TBase extends Constructor<{}>>(Base?: TBase) => {
         findLeaves(): ITreeNodeData[];
         findRoot(): ITreeNodeData;
         hasAncestor(ancestor: ITreeNodeData): boolean;
-        removeNode(child: ITreeNodeData): this;
+        removeChild(child: ITreeNodeData): this;
         toArray(): ITreeNodeData[];
         traverse(visitor: IVisitor, rest?: any): this;
     };
@@ -20,7 +20,7 @@ export declare const mixin: <TBase extends Constructor<{}>>(Base?: TBase) => {
     findLeaves(node: ITreeNodeData): ITreeNodeData[];
     findRoot(node: ITreeNodeData): ITreeNodeData;
     hasAncestor(node: ITreeNodeData, ancestor: ITreeNodeData): boolean;
-    removeNode(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData;
+    removeChild(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData;
     toArray(node: ITreeNodeData): ITreeNodeData[];
     traverse(node: ITreeNodeData, visitor: IVisitor, rest?: any): ITreeNodeData;
 } & TBase;
@@ -33,7 +33,7 @@ declare const _default: {
         findLeaves(): ITreeNodeData[];
         findRoot(): ITreeNodeData;
         hasAncestor(ancestor: ITreeNodeData): boolean;
-        removeNode(child: ITreeNodeData): any;
+        removeChild(child: ITreeNodeData): any;
         toArray(): ITreeNodeData[];
         traverse(visitor: IVisitor, rest?: any): any;
     };
@@ -46,7 +46,7 @@ declare const _default: {
             findLeaves(): ITreeNodeData[];
             findRoot(): ITreeNodeData;
             hasAncestor(ancestor: ITreeNodeData): boolean;
-            removeNode(child: ITreeNodeData): any;
+            removeChild(child: ITreeNodeData): any;
             toArray(): ITreeNodeData[];
             traverse(visitor: IVisitor, rest?: any): any;
         };
@@ -56,7 +56,7 @@ declare const _default: {
         findLeaves(node: ITreeNodeData): ITreeNodeData[];
         findRoot(node: ITreeNodeData): ITreeNodeData;
         hasAncestor(node: ITreeNodeData, ancestor: ITreeNodeData): boolean;
-        removeNode(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData;
+        removeChild(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData;
         toArray(node: ITreeNodeData): ITreeNodeData[];
         traverse(node: ITreeNodeData, visitor: IVisitor, rest?: any): ITreeNodeData;
     } & TBase;
@@ -65,7 +65,7 @@ declare const _default: {
     findLeaves(node: ITreeNodeData): ITreeNodeData[];
     findRoot(node: ITreeNodeData): ITreeNodeData;
     hasAncestor(node: ITreeNodeData, ancestor: ITreeNodeData): boolean;
-    removeNode(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData;
+    removeChild(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData;
     toArray(node: ITreeNodeData): ITreeNodeData[];
     traverse(node: ITreeNodeData, visitor: IVisitor, rest?: any): ITreeNodeData;
 } & ObjectConstructor;
