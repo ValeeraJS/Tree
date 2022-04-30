@@ -7,7 +7,6 @@ export default interface IBinaryTreeNode extends ITreeNode {
 	parent: IBinaryTreeNode | null;
 	right: IBinaryTreeNode | null;
 
-	addChild: (node: IBinaryTreeNode) => this;
 	traverseInOrder: (visitor: IVisitor, rest: any) => this;
 	traversePostOrder: (visitor: IVisitor, rest: any) => this;
 	traversePreOrder: (visitor: IVisitor, rest: any) => this;
