@@ -1,7 +1,8 @@
+/// <reference types="chai" />
 import ITreeNode, { ITreeNodeData } from "./interfaces/ITreeNode";
 import IVisitor from "./interfaces/IVisitor";
-declare type Constructor<T = {}> = new (...a: any[]) => T;
-export declare const mixin: <TBase extends Constructor<{}>>(Base?: TBase) => {
+type Constructor<T = Object> = new (...a: any[]) => T;
+export declare const mixin: <TBase extends Constructor<Object>>(Base?: TBase) => {
     new (...a: any[]): {
         parent: ITreeNode | null;
         children: Array<ITreeNode | null>;
@@ -13,6 +14,14 @@ export declare const mixin: <TBase extends Constructor<{}>>(Base?: TBase) => {
         removeChild(child: ITreeNodeData): this;
         toArray(): ITreeNodeData[];
         traverse(visitor: IVisitor, rest?: any): this;
+        constructor: Function;
+        toString(): string;
+        toLocaleString(): string;
+        valueOf(): Object;
+        hasOwnProperty(v: PropertyKey): boolean;
+        isPrototypeOf(v: Object): boolean;
+        propertyIsEnumerable(v: PropertyKey): boolean;
+        should: Chai.Assertion;
     };
     mixin: any;
     addChild(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData;
@@ -36,8 +45,16 @@ declare const _default: {
         removeChild(child: ITreeNodeData): any;
         toArray(): ITreeNodeData[];
         traverse(visitor: IVisitor, rest?: any): any;
+        constructor: Function;
+        toString(): string;
+        toLocaleString(): string;
+        valueOf(): Object;
+        hasOwnProperty(v: PropertyKey): boolean;
+        isPrototypeOf(v: Object): boolean;
+        propertyIsEnumerable(v: PropertyKey): boolean;
+        should: Chai.Assertion;
     };
-    mixin: <TBase extends Constructor<{}>>(Base?: TBase) => {
+    mixin: <TBase extends Constructor<Object>>(Base?: TBase) => {
         new (...a: any[]): {
             parent: ITreeNode | null;
             children: (ITreeNode | null)[];
@@ -49,6 +66,14 @@ declare const _default: {
             removeChild(child: ITreeNodeData): any;
             toArray(): ITreeNodeData[];
             traverse(visitor: IVisitor, rest?: any): any;
+            constructor: Function;
+            toString(): string;
+            toLocaleString(): string;
+            valueOf(): Object;
+            hasOwnProperty(v: PropertyKey): boolean;
+            isPrototypeOf(v: Object): boolean;
+            propertyIsEnumerable(v: PropertyKey): boolean;
+            should: Chai.Assertion;
         };
         mixin: any;
         addChild(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData;

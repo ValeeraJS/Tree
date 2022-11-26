@@ -242,7 +242,5 @@
 	exports.BinaryTreeNode = AbstractBinaryTreeNode;
 	exports.TreeNode = TreeNode;
 
-	Object.defineProperty(exports, '__esModule', { value: true });
-
 }));
 //# sourceMappingURL=Tree.js.map

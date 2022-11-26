@@ -15,7 +15,7 @@ const ARRAY_VISITOR: IVisitor = {
 	}
 };
 
-type Constructor<T = {}> = new (...a: any[]) => T;
+type Constructor<T = Object> = new (...a: any[]) => T;
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const mixin = <TBase extends Constructor>(Base: TBase = Object as any) => {

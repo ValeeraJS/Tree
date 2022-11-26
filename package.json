@@ -1,6 +1,6 @@
 {
 	"name": "@valeera/tree",
-	"version": "0.1.5-b",
+	"version": "0.1.6",
 	"description": "Data structure: Tree.",
 	"main": "build/Tree.js",
 	"repository": "ValeeraJS/Tree",
@@ -20,14 +20,10 @@
 		"src": "src"
 	},
 	"scripts": {
-		"build": "rollup -c scripts/rollup.config.js",
-		"build-legacy": "rollup -c scripts/rollup.config.legacy.js",
-		"build-closure": "google-closure-compiler --compilation_level=ADVANCED_OPTIMIZATIONS --warning_level=VERBOSE --jscomp_off=globalThis --jscomp_off=checkTypes --externs scripts/externs.js --language_in=ECMASCRIPT_NEXT --language_out=ECMASCRIPT_NEXT --js build/Tree.js --js_output_file build/Tree.min.js",
-		"build-closure-legacy": "google-closure-compiler --compilation_level=ADVANCED_OPTIMIZATIONS --warning_level=VERBOSE --jscomp_off=globalThis --jscomp_off=checkTypes --externs scripts/externs.js --language_in=ECMASCRIPT5 --language_in=ECMASCRIPT5 --js build/Tree.legacy.js --js_output_file build/Tree.legacy.min.js",
-		"build-all": "npm run build && npm run build-legacy && npm run build-closure && npm run build-closure-legacy",
+		"build": "rollup -c scripts/rollup.config.mjs",
 		"start": "npm run dev",
 		"lint": "eslint src --ext js --ext ts",
-		"test": "nyc --reporter=html --reporter=text mocha --require esm",
+		"test": "nyc --reporter=html --reporter=text mocha -r ts-node/register ./test/*.ts",
 		"travis": "npm run lint && npm test"
 	},
 	"keywords": [
@@ -40,23 +36,27 @@
 	"author": "hypnosnova",
 	"license": "MIT",
 	"devDependencies": {
-		"@rollup/plugin-json": "^4.1.0",
-		"@typescript-eslint/eslint-plugin": "^5.8.0",
-		"@typescript-eslint/parser": "^5.8.0",
-		"chai": "^4.3.4",
-		"concurrently": "^6.5.1",
-		"eslint": "^8.5.0",
-		"eslint-config-valeera": "^0.1.1",
-		"eslint-plugin-html": "^6.2.0",
-		"eslint-plugin-prettier": "^4.0.0",
-		"eslint-plugin-tsdoc": "^0.2.14",
-		"esm": "^3.2.25",
-		"google-closure-compiler": "^20220405.0.0",
-		"http-server": "^14.0.0",
-		"prettier": "^2.5.1",
-		"rollup": "^2.62.0",
-		"rollup-plugin-typescript2": "^0.31.1",
-		"typescript": "^4.6.3"
+		"@types/chai": "^4.3.4",
+		"@types/mocha": "^10.0.0",
+		"@typescript-eslint/eslint-plugin": "latest",
+		"@typescript-eslint/parser": "latest",
+		"chai": "latest",
+		"concurrently": "latest",
+		"eslint": "latest",
+		"eslint-config-valeera": "latest",
+		"eslint-plugin-html": "latest",
+		"eslint-plugin-prettier": "latest",
+		"eslint-plugin-tslint": "latest",
+		"esm": "latest",
+		"mocha": "latest",
+		"nyc": "latest",
+		"prettier": "latest",
+		"rollup": "latest",
+		"rollup-plugin-json": "latest",
+		"rollup-plugin-typescript2": "latest",
+		"ts-node": "latest",
+		"tslib": "latest",
+		"typescript": "latest"
 	},
 	"jspm": {
 		"files": [
@@ -66,9 +66,6 @@
 			"build/Tree.js",
 			"build/Tree.min.js",
 			"build/Tree.module.js",
-			"build/Tree.legacy.js",
-			"build/Tree.legacy.min.js",
-			"build/Tree.legacy.module.js",
 			"src"
 		],
 		"directories": {}
