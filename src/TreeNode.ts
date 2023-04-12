@@ -1,5 +1,5 @@
-import ITreeNode, { ITreeNodeData } from "./interfaces/ITreeNode";
-import IVisitor from "./interfaces/IVisitor";
+import { ITreeNode, ITreeNodeData } from "./interfaces/ITreeNode";
+import { IVisitor } from "./interfaces/IVisitor";
 
 const FIND_LEAVES_VISITOR: IVisitor = {
 	enter: (node: ITreeNodeData, result: ITreeNodeData[]) => {
@@ -145,4 +145,4 @@ export const mixin = <TBase extends Constructor>(Base: TBase = Object as any) =>
 	};
 };
 
-export default mixin(Object);
+export const TreeNode = mixin(Object);

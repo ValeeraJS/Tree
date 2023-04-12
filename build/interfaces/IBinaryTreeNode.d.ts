@@ -1,6 +1,6 @@
-import ITreeNode from "./ITreeNode";
-import IVisitor from "./IVisitor";
-export default interface IBinaryTreeNode extends ITreeNode {
+import { ITreeNode } from "./ITreeNode";
+import { IVisitor } from "./IVisitor";
+export interface IBinaryTreeNode extends ITreeNode {
     children: Array<IBinaryTreeNode | null>;
     left: IBinaryTreeNode | null;
     parent: IBinaryTreeNode | null;

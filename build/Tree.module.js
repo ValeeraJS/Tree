@@ -111,7 +111,7 @@ const mixin = (Base = Object) => {
         }
     };
 };
-var TreeNode = mixin(Object);
+const TreeNode = mixin(Object);
 
 let tmpNode;
 class AbstractBinaryTreeNode extends TreeNode {
@@ -233,4 +233,4 @@ class AbstractBinaryTreeNode extends TreeNode {
     }
 }
 
-export { AbstractBinaryTreeNode as BinaryTreeNode, TreeNode };
+export { AbstractBinaryTreeNode, TreeNode, mixin };

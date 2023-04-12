@@ -117,7 +117,7 @@
 	        }
 	    };
 	};
-	var TreeNode = mixin(Object);
+	const TreeNode = mixin(Object);
 
 	let tmpNode;
 	class AbstractBinaryTreeNode extends TreeNode {
@@ -239,8 +239,9 @@
 	    }
 	}
 
-	exports.BinaryTreeNode = AbstractBinaryTreeNode;
+	exports.AbstractBinaryTreeNode = AbstractBinaryTreeNode;
 	exports.TreeNode = TreeNode;
+	exports.mixin = mixin;
 
 }));
 //# sourceMappingURL=Tree.js.map

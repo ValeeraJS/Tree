@@ -1,13 +1,12 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import IBinaryTreeNode from "./interfaces/IBinaryTreeNode";
-import IVisitor from "./interfaces/IVisitor";
-import TreeNode from "./TreeNode";
+import { IBinaryTreeNode } from "./interfaces/IBinaryTreeNode";
+import { IVisitor } from "./interfaces/IVisitor";
+import { TreeNode } from "./TreeNode";
 
 let tmpNode: null | IBinaryTreeNode;
 
 export type IComparer = (currentNode: IBinaryTreeNode, child: IBinaryTreeNode) => boolean;
 
-export default abstract class AbstractBinaryTreeNode extends TreeNode implements IBinaryTreeNode {
+export abstract class AbstractBinaryTreeNode extends TreeNode implements IBinaryTreeNode {
 	public children: Array<IBinaryTreeNode | null> = [null, null];
 	public parent: IBinaryTreeNode | null = null;
 	private comparer: IComparer;

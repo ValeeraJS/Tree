@@ -1,9 +1,9 @@
-import IVisitor from "./IVisitor";
+import { IVisitor } from "./IVisitor";
 export interface ITreeNodeData {
     parent: ITreeNodeData | ITreeNode | null;
     children: Array<ITreeNodeData | ITreeNode | null>;
 }
-export default interface ITreeNode extends ITreeNodeData {
+export interface ITreeNode extends ITreeNodeData {
     addChild: (node: ITreeNodeData | ITreeNode) => this;
     depth: (node: ITreeNodeData | ITreeNode) => number;
     findLeaves: () => Array<ITreeNodeData | ITreeNode>;

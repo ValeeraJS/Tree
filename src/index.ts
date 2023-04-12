@@ -1,5 +1,4 @@
-export { default as TreeNode } from "./TreeNode";
-export { default as BinaryTreeNode } from "./BinaryTreeNode";
-
-export { default as ITreeNode, ITreeNodeData } from "./interfaces/ITreeNode";
-export { default as IVisitor } from "./interfaces/IVisitor";
+export * from "./TreeNode";
+export * from "./BinaryTreeNode";
+export * from "./interfaces/ITreeNode";
+export * from "./interfaces/IVisitor";

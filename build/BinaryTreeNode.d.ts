@@ -1,8 +1,8 @@
-import IBinaryTreeNode from "./interfaces/IBinaryTreeNode";
-import IVisitor from "./interfaces/IVisitor";
-import TreeNode from "./TreeNode";
+import { IBinaryTreeNode } from "./interfaces/IBinaryTreeNode";
+import { IVisitor } from "./interfaces/IVisitor";
+import { TreeNode } from "./TreeNode";
 export type IComparer = (currentNode: IBinaryTreeNode, child: IBinaryTreeNode) => boolean;
-export default abstract class AbstractBinaryTreeNode extends TreeNode implements IBinaryTreeNode {
+export declare abstract class AbstractBinaryTreeNode extends TreeNode implements IBinaryTreeNode {
     children: Array<IBinaryTreeNode | null>;
     parent: IBinaryTreeNode | null;
     private comparer;

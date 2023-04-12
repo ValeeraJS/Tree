@@ -1,7 +1,7 @@
 /* eslint-disable max-nested-callbacks */
 import { expect } from "chai";
-import IVisitor from "../src/interfaces/IVisitor";
-import TreeNode from "../src/TreeNode";
+import { IVisitor } from "../src/interfaces/IVisitor";
+import { TreeNode, mixin } from "../src/TreeNode";
 
 describe("treenode api", function () {
 	it("addChild:", function () {
@@ -18,6 +18,15 @@ describe("treenode api", function () {
 		} catch (e) {
 			expect(e instanceof Error).to.equal(true);
 		}
+	});
+	it("removeChild:", function () {
+		const a = new TreeNode();
+		const b = new TreeNode();
+		const c = new TreeNode();
+
+		a.addChild(b);
+		a.removeChild(c);
+		expect(a.depth()).to.be.equals(2);
 	});
 	it("depth:", function () {
 		const a = new TreeNode();
@@ -104,5 +113,19 @@ describe("treenode api", function () {
 
 		a.traverse(sumVisitor, result);
 		expect(result.sum).to.equal(6);
+	});
+});
+
+describe("mixin", function () {
+	class A {
+		aaa() { }
+	}
+	const B = mixin(A);
+	const C = mixin();
+	it("addChild:", function () {
+		const a = new B();
+		const c = new C();
+		expect(a instanceof A).to.be.true;
+		expect(c.depth()).to.be.equals(1);
 	});
 });

@@ -1,6 +1,6 @@
 /// <reference types="chai" />
-import ITreeNode, { ITreeNodeData } from "./interfaces/ITreeNode";
-import IVisitor from "./interfaces/IVisitor";
+import { ITreeNode, ITreeNodeData } from "./interfaces/ITreeNode";
+import { IVisitor } from "./interfaces/IVisitor";
 type Constructor<T = Object> = new (...a: any[]) => T;
 export declare const mixin: <TBase extends Constructor<Object>>(Base?: TBase) => {
     new (...a: any[]): {
@@ -33,18 +33,18 @@ export declare const mixin: <TBase extends Constructor<Object>>(Base?: TBase) =>
     toArray(node: ITreeNodeData): ITreeNodeData[];
     traverse(node: ITreeNodeData, visitor: IVisitor, rest?: any): ITreeNodeData;
 } & TBase;
-declare const _default: {
+export declare const TreeNode: {
     new (...a: any[]): {
         parent: ITreeNode | null;
-        children: (ITreeNode | null)[];
-        addChild(node: ITreeNodeData): any;
+        children: Array<ITreeNode | null>;
+        addChild(node: ITreeNodeData): this;
         depth(): number;
         findLeaves(): ITreeNodeData[];
         findRoot(): ITreeNodeData;
         hasAncestor(ancestor: ITreeNodeData): boolean;
-        removeChild(child: ITreeNodeData): any;
+        removeChild(child: ITreeNodeData): this;
         toArray(): ITreeNodeData[];
-        traverse(visitor: IVisitor, rest?: any): any;
+        traverse(visitor: IVisitor, rest?: any): this;
         constructor: Function;
         toString(): string;
         toLocaleString(): string;
@@ -57,15 +57,15 @@ declare const _default: {
     mixin: <TBase extends Constructor<Object>>(Base?: TBase) => {
         new (...a: any[]): {
             parent: ITreeNode | null;
-            children: (ITreeNode | null)[];
-            addChild(node: ITreeNodeData): any;
+            children: Array<ITreeNode | null>;
+            addChild(node: ITreeNodeData): this;
             depth(): number;
             findLeaves(): ITreeNodeData[];
             findRoot(): ITreeNodeData;
             hasAncestor(ancestor: ITreeNodeData): boolean;
-            removeChild(child: ITreeNodeData): any;
+            removeChild(child: ITreeNodeData): this;
             toArray(): ITreeNodeData[];
-            traverse(visitor: IVisitor, rest?: any): any;
+            traverse(visitor: IVisitor, rest?: any): this;
             constructor: Function;
             toString(): string;
             toLocaleString(): string;
@@ -94,4 +94,4 @@ declare const _default: {
     toArray(node: ITreeNodeData): ITreeNodeData[];
     traverse(node: ITreeNodeData, visitor: IVisitor, rest?: any): ITreeNodeData;
 } & ObjectConstructor;
-export default _default;
+export {};
