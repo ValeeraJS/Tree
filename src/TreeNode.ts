@@ -1,16 +1,16 @@
 import { ITreeNode, ITreeNodeData } from "./interfaces/ITreeNode";
 import { IVisitor } from "./interfaces/IVisitor";
 
-const FIND_LEAVES_VISITOR: IVisitor = {
-	enter: (node: ITreeNodeData, result: ITreeNodeData[]) => {
+const FIND_LEAVES_VISITOR: IVisitor<any> = {
+	enter: (node: ITreeNodeData<any>, result: ITreeNodeData<any>[]) => {
 		if (!node.children.length) {
 			result.push(node);
 		}
 	}
 };
 
-const ARRAY_VISITOR: IVisitor = {
-	enter: (node: ITreeNodeData, result: ITreeNodeData[]) => {
+const ARRAY_VISITOR: IVisitor<any> = {
+	enter: (node: ITreeNodeData<any>, result: ITreeNodeData<any>[]) => {
 		result.push(node);
 	}
 };
@@ -18,11 +18,11 @@ const ARRAY_VISITOR: IVisitor = {
 type Constructor<T = Object> = new (...a: any[]) => T;
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const mixin = <TBase extends Constructor>(Base: TBase = Object as any) => {
-	return class TreeNode extends Base implements ITreeNode {
+export const mixin = <TBase extends Constructor>(Base?: TBase) => {
+	return class TreeNode<T> extends (Base || Object) implements ITreeNode<T> {
 		public static mixin = mixin;
 
-		public static addChild(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData {
+		public static addChild<T>(node: ITreeNodeData<T>, child: ITreeNodeData<T>): ITreeNodeData<T> {
 			if (TreeNode.hasAncestor(node, child)) {
 				throw new Error("The node added is one of the ancestors of current one.");
 			}
@@ -32,7 +32,7 @@ export const mixin = <TBase extends Constructor>(Base: TBase = Object as any) =>
 			return node;
 		}
 
-		public static depth(node: ITreeNodeData): number {
+		public static depth<T>(node: ITreeNodeData<T>): number {
 			if (!node.children.length) {
 				return 1;
 			} else {
@@ -52,15 +52,15 @@ export const mixin = <TBase extends Constructor>(Base: TBase = Object as any) =>
 			}
 		}
 
-		public static findLeaves(node: ITreeNodeData): ITreeNodeData[] {
-			const result: ITreeNodeData[] = [];
+		public static findLeaves<T>(node: ITreeNodeData<T>): ITreeNodeData<T>[] {
+			const result: ITreeNodeData<T>[] = [];
 
 			TreeNode.traverse(node, FIND_LEAVES_VISITOR, result);
 
 			return result;
 		}
 
-		public static findRoot(node: ITreeNodeData): ITreeNodeData {
+		public static findRoot<T>(node: ITreeNodeData<T>): ITreeNodeData<T> {
 			if (node.parent) {
 				return this.findRoot(node.parent);
 			}
@@ -68,7 +68,7 @@ export const mixin = <TBase extends Constructor>(Base: TBase = Object as any) =>
 			return node;
 		}
 
-		public static hasAncestor(node: ITreeNodeData, ancestor: ITreeNodeData): boolean {
+		public static hasAncestor<T>(node: ITreeNodeData<T>, ancestor: ITreeNodeData<T>): boolean {
 			if (!node.parent) {
 				return false;
 			} else {
@@ -80,7 +80,7 @@ export const mixin = <TBase extends Constructor>(Base: TBase = Object as any) =>
 			}
 		}
 
-		public static removeChild(node: ITreeNodeData, child: ITreeNodeData): ITreeNodeData {
+		public static removeChild<T>(node: ITreeNodeData<T>, child: ITreeNodeData<T>): ITreeNodeData<T> {
 			if (node.children.includes(child)) {
 				node.children.splice(node.children.indexOf(child), 1);
 				child.parent = null;
@@ -89,15 +89,15 @@ export const mixin = <TBase extends Constructor>(Base: TBase = Object as any) =>
 			return node;
 		}
 
-		public static toArray(node: ITreeNodeData): ITreeNodeData[] {
-			const result: ITreeNodeData[] = [];
+		public static toArray<T>(node: ITreeNodeData<T>): ITreeNodeData<T>[] {
+			const result: ITreeNodeData<T>[] = [];
 
 			TreeNode.traverse(node, ARRAY_VISITOR, result);
 
 			return result;
 		}
 
-		public static traverse(node: ITreeNodeData, visitor: IVisitor, rest?: any): ITreeNodeData {
+		public static traverse<T>(node: ITreeNodeData<T>, visitor: IVisitor<T>, rest?: any): ITreeNodeData<T> {
 			visitor.enter?.(node, rest);
 			visitor.visit?.(node, rest);
 			for (const item of node.children) {
@@ -107,11 +107,15 @@ export const mixin = <TBase extends Constructor>(Base: TBase = Object as any) =>
 
 			return node;
 		}
+		
+		public constructor(...rest: any[]) {
+			super(...rest);
+		}
 
-		public parent: ITreeNode | null = null;
-		public children: Array<ITreeNode | null> = [];
+		public parent: ITreeNode<T> | null = null;
+		public children: Array<ITreeNode<T> | null> = [];
 
-		public addChild(node: ITreeNodeData): this {
+		public addChild(node: ITreeNodeData<T>): this {
 			return TreeNode.addChild(this, node) as this;
 		}
 
@@ -119,27 +123,27 @@ export const mixin = <TBase extends Constructor>(Base: TBase = Object as any) =>
 			return TreeNode.depth(this);
 		}
 
-		public findLeaves(): ITreeNodeData[] {
+		public findLeaves(): ITreeNodeData<T>[] {
 			return TreeNode.findLeaves(this);
 		}
 
-		public findRoot(): ITreeNodeData {
+		public findRoot(): ITreeNodeData<T> {
 			return TreeNode.findRoot(this);
 		}
 
-		public hasAncestor(ancestor: ITreeNodeData): boolean {
+		public hasAncestor(ancestor: ITreeNodeData<T>): boolean {
 			return TreeNode.hasAncestor(this, ancestor);
 		}
 
-		public removeChild(child: ITreeNodeData): this {
+		public removeChild(child: ITreeNodeData<T>): this {
 			return TreeNode.removeChild(this, child) as this;
 		}
 
-		public toArray(): ITreeNodeData[] {
+		public toArray(): ITreeNodeData<T>[] {
 			return TreeNode.toArray(this);
 		}
 
-		public traverse(visitor: IVisitor, rest?: any): this {
+		public traverse(visitor: IVisitor<T>, rest?: any): this {
 			return TreeNode.traverse(this, visitor, rest) as this;
 		}
 	};

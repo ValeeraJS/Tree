@@ -1,14 +1,14 @@
 import { IVisitor } from "./IVisitor";
-export interface ITreeNodeData {
-    parent: ITreeNodeData | ITreeNode | null;
-    children: Array<ITreeNodeData | ITreeNode | null>;
+export interface ITreeNodeData<T> {
+    parent: ITreeNodeData<T> | ITreeNode<T> | null;
+    children: Array<ITreeNodeData<T> | ITreeNode<T> | null>;
 }
-export interface ITreeNode extends ITreeNodeData {
-    addChild: (node: ITreeNodeData | ITreeNode) => this;
-    depth: (node: ITreeNodeData | ITreeNode) => number;
-    findLeaves: () => Array<ITreeNodeData | ITreeNode>;
-    findRoot: (node: ITreeNodeData | ITreeNode) => ITreeNodeData | ITreeNode;
-    hasAncestor: (node: ITreeNodeData | ITreeNode) => boolean;
-    removeChild: (node: ITreeNodeData | ITreeNode) => this;
-    traverse: (visitor: IVisitor, depth: number) => any;
+export interface ITreeNode<T> extends ITreeNodeData<T> {
+    addChild: (node: ITreeNodeData<T> | ITreeNode<T>) => this;
+    depth: (node: ITreeNodeData<T> | ITreeNode<T>) => number;
+    findLeaves: () => Array<ITreeNodeData<T> | ITreeNode<T>>;
+    findRoot: (node: ITreeNodeData<T> | ITreeNode<T>) => ITreeNodeData<T> | ITreeNode<T>;
+    hasAncestor: (node: ITreeNodeData<T> | ITreeNode<T>) => boolean;
+    removeChild: (node: ITreeNodeData<T> | ITreeNode<T>) => this;
+    traverse: (visitor: IVisitor<T>, depth: number) => any;
 }

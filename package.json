@@ -1,6 +1,6 @@
 {
 	"name": "@valeera/tree",
-	"version": "0.1.7",
+	"version": "0.1.8",
 	"description": "Data structure: Tree.",
 	"main": "build/Tree.js",
 	"repository": "ValeeraJS/Tree",
@@ -56,7 +56,7 @@
 		"rollup-plugin-typescript2": "latest",
 		"ts-node": "latest",
 		"tslib": "latest",
-		"typescript": "^5.0.2"
+		"typescript": "^5.2.2"
 	},
 	"jspm": {
 		"files": [
@@ -73,5 +73,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"dependencies": {}
+	"dependencies": {
+		"@valeera/mathx": "0.1.61-alpha1"
+	}
 }
