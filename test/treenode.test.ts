@@ -89,11 +89,15 @@ describe("treenode api", function () {
 		expect(b.toArray().length).to.equal(2);
 	});
 	it("traverse:", function () {
-		class NumTree extends TreeNode<any> {
+		class NumTree extends TreeNode<NumTree> {
 			public data: number;
 			public constructor(data: number) {
 				super();
 				this.data = data;
+			}
+
+			get2() {
+				return this.data * 2;
 			}
 		}
 		const a = new NumTree(1);

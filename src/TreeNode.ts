@@ -17,8 +17,8 @@ const ARRAY_VISITOR: IVisitor<any> = {
 
 type Constructor<T = Object> = new (...a: any[]) => T;
 
-export const mixin = <TBase extends Constructor>(Base?: TBase) => {
-	return class TreeNode<T extends TBase> extends (Base || Object) implements ITreeNode<T> {
+export const mixin = <TBase extends Constructor>(Base: TBase | typeof Object = Object) => {
+	return class TreeNode<T extends ITreeNodeData<T>> extends (Base) implements ITreeNode<T> {
 		public static mixin = mixin;
 
 		public static addChild<T>(node: ITreeNodeData<T>, child: ITreeNodeData<T>): ITreeNodeData<T> {

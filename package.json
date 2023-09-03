@@ -1,6 +1,6 @@
 {
 	"name": "@valeera/tree",
-	"version": "0.1.9.alpha-1",
+	"version": "0.1.9alpha-2",
 	"description": "Data structure: Tree.",
 	"main": "build/Tree.js",
 	"repository": "ValeeraJS/Tree",

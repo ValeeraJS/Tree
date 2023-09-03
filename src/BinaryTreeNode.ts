@@ -6,7 +6,7 @@ let tmpNode: null | IBinaryTreeNode<any>;
 
 export type IComparer = (currentNode: IBinaryTreeNode<any>, child: IBinaryTreeNode<any>) => boolean;
 
-export abstract class AbstractBinaryTreeNode<T> extends TreeNode<T> implements IBinaryTreeNode<T> {
+export abstract class AbstractBinaryTreeNode<T> extends TreeNode<AbstractBinaryTreeNode<T>> implements IBinaryTreeNode<T> {
 	public children: Array<IBinaryTreeNode<T> | null> = [null, null];
 	public parent: IBinaryTreeNode<T> | null = null;
 	private comparer: IComparer;

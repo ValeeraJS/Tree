@@ -1,8 +1,8 @@
 import { ITreeNode, ITreeNodeData } from "./interfaces/ITreeNode";
 import { IVisitor } from "./interfaces/IVisitor";
 type Constructor<T = Object> = new (...a: any[]) => T;
-export declare const mixin: <TBase extends Constructor<Object>>(Base?: TBase | undefined) => {
-    new <T extends TBase>(...rest: any[]): {
+export declare const mixin: <TBase extends Constructor<Object>>(Base?: TBase | ObjectConstructor) => {
+    new <T extends ITreeNodeData<T>>(...rest: any[]): {
         parent: ITreeNode<T> | null;
         children: (ITreeNode<T> | null)[];
         addChild(node: ITreeNodeData<T>): this;
@@ -25,7 +25,7 @@ export declare const mixin: <TBase extends Constructor<Object>>(Base?: TBase | u
     traverse<T_8>(node: ITreeNodeData<T_8>, visitor: IVisitor<T_8>, rest?: any): ITreeNodeData<T_8>;
 };
 export declare const TreeNode: {
-    new <T extends ObjectConstructor>(...rest: any[]): {
+    new <T extends ITreeNodeData<T>>(...rest: any[]): {
         parent: ITreeNode<T> | null;
         children: (ITreeNode<T> | null)[];
         addChild(node: ITreeNodeData<T>): this;
@@ -37,8 +37,8 @@ export declare const TreeNode: {
         toArray(): ITreeNodeData<T>[];
         traverse(visitor: IVisitor<T>, rest?: any): this;
     };
-    mixin: <TBase extends Constructor<Object>>(Base?: TBase | undefined) => {
-        new <T_1 extends TBase>(...rest: any[]): {
+    mixin: <TBase extends Constructor<Object>>(Base?: TBase | ObjectConstructor) => {
+        new <T_1 extends ITreeNodeData<T_1>>(...rest: any[]): {
             parent: ITreeNode<T_1> | null;
             children: (ITreeNode<T_1> | null)[];
             addChild(node: ITreeNodeData<T_1>): this;

@@ -16,8 +16,8 @@
 	        result.push(node);
 	    }
 	};
-	const mixin = (Base) => {
-	    return class TreeNode extends (Base || Object) {
+	const mixin = (Base = Object) => {
+	    return class TreeNode extends (Base) {
 	        static mixin = mixin;
 	        static addChild(node, child) {
 	            if (TreeNode.hasAncestor(node, child)) {

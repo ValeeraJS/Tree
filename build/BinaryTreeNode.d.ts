@@ -2,7 +2,7 @@ import { IBinaryTreeNode } from "./interfaces/IBinaryTreeNode";
 import { IVisitor } from "./interfaces/IVisitor";
 import { TreeNode } from "./TreeNode";
 export type IComparer = (currentNode: IBinaryTreeNode<any>, child: IBinaryTreeNode<any>) => boolean;
-export declare abstract class AbstractBinaryTreeNode<T> extends TreeNode<T> implements IBinaryTreeNode<T> {
+export declare abstract class AbstractBinaryTreeNode<T> extends TreeNode<AbstractBinaryTreeNode<T>> implements IBinaryTreeNode<T> {
     children: Array<IBinaryTreeNode<T> | null>;
     parent: IBinaryTreeNode<T> | null;
     private comparer;
