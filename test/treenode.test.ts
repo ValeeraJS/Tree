@@ -89,7 +89,7 @@ describe("treenode api", function () {
 		expect(b.toArray().length).to.equal(2);
 	});
 	it("traverse:", function () {
-		class NumTree extends TreeNode {
+		class NumTree extends TreeNode<any> {
 			public data: number;
 			public constructor(data: number) {
 				super();
@@ -105,7 +105,7 @@ describe("treenode api", function () {
 
 		const result: { sum: number } = { sum: 0 };
 
-		const sumVisitor: IVisitor = {
+		const sumVisitor: IVisitor<NumTree> = {
 			enter: (node: any, result: { sum: number }) => {
 				result.sum += node.data;
 			}

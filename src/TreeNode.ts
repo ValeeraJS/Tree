@@ -17,9 +17,8 @@ const ARRAY_VISITOR: IVisitor<any> = {
 
 type Constructor<T = Object> = new (...a: any[]) => T;
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const mixin = <TBase extends Constructor>(Base?: TBase) => {
-	return class TreeNode<T> extends (Base || Object) implements ITreeNode<T> {
+	return class TreeNode<T extends TBase> extends (Base || Object) implements ITreeNode<T> {
 		public static mixin = mixin;
 
 		public static addChild<T>(node: ITreeNodeData<T>, child: ITreeNodeData<T>): ITreeNodeData<T> {

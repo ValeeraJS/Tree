@@ -16,7 +16,6 @@
 	        result.push(node);
 	    }
 	};
-	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 	const mixin = (Base) => {
 	    return class TreeNode extends (Base || Object) {
 	        static mixin = mixin;
