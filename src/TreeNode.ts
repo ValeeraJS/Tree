@@ -2,15 +2,15 @@ import { ITreeNode, ITreeNodeData } from "./interfaces/ITreeNode";
 import { IVisitor } from "./interfaces/IVisitor";
 
 const FIND_LEAVES_VISITOR: IVisitor<any> = {
-	enter: (node: ITreeNodeData<any>, result: ITreeNodeData<any>[]) => {
-		if (!node.children.length) {
+	enter: (node: ITreeNodeData, result: ITreeNodeData[]) => {
+		if (TreeNode.isLeaf(node)) {
 			result.push(node);
 		}
 	}
 };
 
 const ARRAY_VISITOR: IVisitor<any> = {
-	enter: (node: ITreeNodeData<any>, result: ITreeNodeData<any>[]) => {
+	enter: (node: ITreeNodeData, result: ITreeNodeData[]) => {
 		result.push(node);
 	}
 };
@@ -18,20 +18,22 @@ const ARRAY_VISITOR: IVisitor<any> = {
 type Constructor<T = Object> = new (...a: any[]) => T;
 
 export const mixin = <TBase extends Constructor>(Base: TBase | typeof Object = Object) => {
-	return class TreeNode<T extends ITreeNodeData<T>> extends (Base) implements ITreeNode<T> {
+	return class TreeNode extends (Base) implements ITreeNode {
 		public static mixin = mixin;
 
-		public static addChild<T>(node: ITreeNodeData<T>, child: ITreeNodeData<T>): ITreeNodeData<T> {
+		public static addChild<T extends ITreeNodeData>(node: T, child: ITreeNodeData | null): T {
 			if (TreeNode.hasAncestor(node, child)) {
 				throw new Error("The node added is one of the ancestors of current one.");
 			}
 			node.children.push(child);
-			child.parent = node;
+			if (child) {
+				child.parent = node;
+			}
 
 			return node;
 		}
 
-		public static depth<T>(node: ITreeNodeData<T>): number {
+		public static depth(node: ITreeNodeData): number {
 			if (!node.children.length) {
 				return 1;
 			} else {
@@ -51,15 +53,15 @@ export const mixin = <TBase extends Constructor>(Base: TBase | typeof Object = O
 			}
 		}
 
-		public static findLeaves<T>(node: ITreeNodeData<T>): ITreeNodeData<T>[] {
-			const result: ITreeNodeData<T>[] = [];
+		public static findLeaves<T extends ITreeNodeData>(node: T): T[] {
+			const result: T[] = [];
 
-			TreeNode.traverse(node, FIND_LEAVES_VISITOR, result);
+			TreeNode.traversePreorder(node, FIND_LEAVES_VISITOR, result);
 
 			return result;
 		}
 
-		public static findRoot<T>(node: ITreeNodeData<T>): ITreeNodeData<T> {
+		public static findRoot<T extends ITreeNodeData>(node: T): ITreeNodeData {
 			if (node.parent) {
 				return this.findRoot(node.parent);
 			}
@@ -67,7 +69,7 @@ export const mixin = <TBase extends Constructor>(Base: TBase | typeof Object = O
 			return node;
 		}
 
-		public static hasAncestor<T>(node: ITreeNodeData<T>, ancestor: ITreeNodeData<T>): boolean {
+		public static hasAncestor(node: ITreeNodeData, ancestor: ITreeNodeData | null): boolean {
 			if (!node.parent) {
 				return false;
 			} else {
@@ -79,7 +81,16 @@ export const mixin = <TBase extends Constructor>(Base: TBase | typeof Object = O
 			}
 		}
 
-		public static removeChild<T>(node: ITreeNodeData<T>, child: ITreeNodeData<T>): ITreeNodeData<T> {
+		public static isLeaf(node: ITreeNodeData): boolean {
+			for (let i = 0, len = node.children.length; i < len; i++) {
+				if (node.children[i]) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		public static removeChild<T extends ITreeNodeData>(node: T, child: T): T {
 			if (node.children.includes(child)) {
 				node.children.splice(node.children.indexOf(child), 1);
 				child.parent = null;
@@ -88,19 +99,30 @@ export const mixin = <TBase extends Constructor>(Base: TBase | typeof Object = O
 			return node;
 		}
 
-		public static toArray<T>(node: ITreeNodeData<T>): ITreeNodeData<T>[] {
-			const result: ITreeNodeData<T>[] = [];
+		public static toArray<T extends ITreeNodeData>(node: T): T[] {
+			const result: T[] = [];
 
-			TreeNode.traverse(node, ARRAY_VISITOR, result);
+			TreeNode.traversePreorder(node, ARRAY_VISITOR, result);
 
 			return result;
 		}
 
-		public static traverse<T>(node: ITreeNodeData<T>, visitor: IVisitor<T>, rest?: any): ITreeNodeData<T> {
+		public static traversePostorder<T extends ITreeNodeData>(node: T, visitor: IVisitor<T>, ...rest: any[]): T {
 			visitor.enter?.(node, rest);
-			visitor.visit?.(node, rest);
 			for (const item of node.children) {
-				item && TreeNode.traverse(item, visitor, rest);
+				item && TreeNode.traversePostorder(item, visitor, ...rest);
+			}
+			visitor.visit?.(node, ...rest);
+			visitor.leave?.(node, ...rest);
+
+			return node;
+		}
+
+		public static traversePreorder<T extends ITreeNodeData>(node: T, visitor: IVisitor<T>, ...rest: any[]): T {
+			visitor.enter?.(node, ...rest);
+			visitor.visit?.(node, ...rest);
+			for (const item of node.children) {
+				item && TreeNode.traversePreorder(item, visitor, ...rest);
 			}
 			visitor.leave?.(node, rest);
 
@@ -111,39 +133,47 @@ export const mixin = <TBase extends Constructor>(Base: TBase | typeof Object = O
 			super(...rest);
 		}
 
-		public parent: T | null = null;
-		public children: Array<T | null> = [];
+		public parent: TreeNode | null = null;
+		public children: Array<TreeNode | null> = [];
 
-		public addChild(node: ITreeNodeData<T>): this {
-			return TreeNode.addChild(this, node) as this;
+		public addChild(node: ITreeNodeData | null): this {
+			return TreeNode.addChild(this, node);
 		}
 
 		public depth(): number {
 			return TreeNode.depth(this);
 		}
 
-		public findLeaves(): ITreeNodeData<T>[] {
+		public findLeaves(): TreeNode[] {
 			return TreeNode.findLeaves(this);
 		}
 
-		public findRoot(): ITreeNodeData<T> {
-			return TreeNode.findRoot(this);
+		public findRoot(): TreeNode {
+			return TreeNode.findRoot(this) as TreeNode;
 		}
 
-		public hasAncestor(ancestor: ITreeNodeData<T>): boolean {
+		public hasAncestor(ancestor: TreeNode): boolean {
 			return TreeNode.hasAncestor(this, ancestor);
 		}
 
-		public removeChild(child: ITreeNodeData<T>): this {
+		public isLeaf(): boolean {
+			return TreeNode.isLeaf(this);
+		}
+
+		public removeChild(child: TreeNode): this {
 			return TreeNode.removeChild(this, child) as this;
 		}
 
-		public toArray(): ITreeNodeData<T>[] {
+		public toArray(): TreeNode[] {
 			return TreeNode.toArray(this);
 		}
 
-		public traverse(visitor: IVisitor<T>, rest?: any): this {
-			return TreeNode.traverse(this, visitor, rest) as this;
+		public traversePostorder(visitor: IVisitor<TreeNode>, ...rest: any[]): this {
+			return TreeNode.traversePostorder(this, visitor, rest) as this;
+		}
+
+		public traversePreorder(visitor: IVisitor<TreeNode>, ...rest: any[]): this {
+			return TreeNode.traversePreorder(this, visitor, ...rest) as this;
 		}
 	};
 };
