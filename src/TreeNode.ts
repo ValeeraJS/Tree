@@ -111,8 +111,8 @@ export const mixin = <TBase extends Constructor>(Base: TBase | typeof Object = O
 			super(...rest);
 		}
 
-		public parent: ITreeNode<T> | null = null;
-		public children: Array<ITreeNode<T> | null> = [];
+		public parent: T | null = null;
+		public children: Array<T | null> = [];
 
 		public addChild(node: ITreeNodeData<T>): this {
 			return TreeNode.addChild(this, node) as this;
