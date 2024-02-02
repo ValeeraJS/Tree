@@ -15,7 +15,7 @@ const tmpOptions: QuadTreeOptions = {
     level: 0,
 }
 
-export class QuadTreeNode extends TreeNode<any> {
+export class QuadTreeNode extends TreeNode {
     readonly maxDepth: number;
     readonly maxObjects: number;
     readonly boundingRect: Rectangle2;
