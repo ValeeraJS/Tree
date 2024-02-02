@@ -3,8 +3,8 @@ import { expect } from "chai";
 import { IVisitor } from "../src/interfaces/IVisitor";
 import { TreeNode, mixin } from "../src/TreeNode";
 
-describe("treenode api", function () {
-	it("addChild:", function () {
+describe("treenode api", () => {
+	it("addChild:", () => {
 		const a = new TreeNode();
 		const b = new TreeNode();
 		const c = new TreeNode();
@@ -19,7 +19,7 @@ describe("treenode api", function () {
 			expect(e instanceof Error).to.equal(true);
 		}
 	});
-	it("removeChild:", function () {
+	it("removeChild:", () => {
 		const a = new TreeNode();
 		const b = new TreeNode();
 		const c = new TreeNode();
@@ -28,7 +28,7 @@ describe("treenode api", function () {
 		a.removeChild(c);
 		expect(a.depth()).to.be.equals(2);
 	});
-	it("depth:", function () {
+	it("depth:", () => {
 		const a = new TreeNode();
 		const b = new TreeNode();
 		const c = new TreeNode();
@@ -39,7 +39,7 @@ describe("treenode api", function () {
 		b.removeChild(c);
 		expect(a.depth()).to.equal(2);
 	});
-	it("find leaves:", function () {
+	it("find leaves:", () => {
 		const a = new TreeNode();
 
 		expect(a.isLeaf()).to.equal(true);
@@ -55,7 +55,7 @@ describe("treenode api", function () {
 		b.removeChild(c);
 		expect(a.findLeaves()[0]).to.equal(b);
 	});
-	it("find root:", function () {
+	it("find root:", () => {
 		const a = new TreeNode();
 
 		expect(a.findRoot()).to.equal(a);
@@ -68,7 +68,7 @@ describe("treenode api", function () {
 		b.removeChild(c);
 		expect(c.findRoot()).to.equal(c);
 	});
-	it("hasAncestor:", function () {
+	it("hasAncestor:", () => {
 		const a = new TreeNode();
 
 		expect(a.hasAncestor(a)).to.equal(false);
@@ -81,7 +81,7 @@ describe("treenode api", function () {
 		b.removeChild(c);
 		expect(c.hasAncestor(a)).to.equal(false);
 	});
-	it("toArray:", function () {
+	it("toArray:", () => {
 		const a = new TreeNode();
 		const b = new TreeNode();
 		const c = new TreeNode();
@@ -91,7 +91,7 @@ describe("treenode api", function () {
 		expect(a.toArray().length).to.equal(3);
 		expect(b.toArray().length).to.equal(2);
 	});
-	it("traverse:", function () {
+	it("traverse:", () => {
 		class NumTree extends TreeNode {
 			public data: number;
 			public constructor(data: number) {
@@ -115,7 +115,7 @@ describe("treenode api", function () {
 		const sumVisitor: IVisitor<NumTree> = {
 			enter: (node: any, result: { sum: number }) => {
 				result.sum += node.data;
-			}
+			},
 		};
 
 		a.traversePreorder(sumVisitor, result);
@@ -125,13 +125,13 @@ describe("treenode api", function () {
 	});
 });
 
-describe("mixin", function () {
+describe("mixin", () => {
 	class A {
-		aaa() { }
+		aaa() {}
 	}
 	const B = mixin(A);
 	const C = mixin();
-	it("addChild:", function () {
+	it("addChild:", () => {
 		const a = new B();
 		const c = new C();
 		expect(a instanceof A).to.be.true;

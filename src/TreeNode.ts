@@ -6,19 +6,19 @@ const FIND_LEAVES_VISITOR: IVisitor<any> = {
 		if (TreeNode.isLeaf(node)) {
 			result.push(node);
 		}
-	}
+	},
 };
 
 const ARRAY_VISITOR: IVisitor<any> = {
 	enter: (node: ITreeNodeData, result: ITreeNodeData[]) => {
 		result.push(node);
-	}
+	},
 };
 
 type Constructor<T = Object> = new (...a: any[]) => T;
 
 export const mixin = <TBase extends Constructor>(Base: TBase | typeof Object = Object) => {
-	return class TreeNode extends (Base) implements ITreeNode {
+	return class TreeNode extends Base implements ITreeNode {
 		public static mixin = mixin;
 
 		public static addChild<T extends ITreeNodeData>(node: T, child: ITreeNodeData | null): T {
@@ -127,10 +127,6 @@ export const mixin = <TBase extends Constructor>(Base: TBase | typeof Object = O
 			visitor.leave?.(node, rest);
 
 			return node;
-		}
-		
-		public constructor(...rest: any[]) {
-			super(...rest);
 		}
 
 		public parent: TreeNode | null = null;

@@ -6,25 +6,27 @@
 
 	const FIND_LEAVES_VISITOR = {
 	    enter: (node, result) => {
-	        if (!node.children.length) {
+	        if (TreeNode.isLeaf(node)) {
 	            result.push(node);
 	        }
-	    }
+	    },
 	};
 	const ARRAY_VISITOR = {
 	    enter: (node, result) => {
 	        result.push(node);
-	    }
+	    },
 	};
 	const mixin = (Base = Object) => {
-	    return class TreeNode extends (Base) {
+	    return class TreeNode extends Base {
 	        static mixin = mixin;
 	        static addChild(node, child) {
 	            if (TreeNode.hasAncestor(node, child)) {
 	                throw new Error("The node added is one of the ancestors of current one.");
 	            }
 	            node.children.push(child);
-	            child.parent = node;
+	            if (child) {
+	                child.parent = node;
+	            }
 	            return node;
 	        }
 	        static depth(node) {
@@ -45,7 +47,7 @@
 	        }
 	        static findLeaves(node) {
 	            const result = [];
-	            TreeNode.traverse(node, FIND_LEAVES_VISITOR, result);
+	            TreeNode.traversePreorder(node, FIND_LEAVES_VISITOR, result);
 	            return result;
 	        }
 	        static findRoot(node) {
@@ -67,6 +69,14 @@
 	                }
 	            }
 	        }
+	        static isLeaf(node) {
+	            for (let i = 0, len = node.children.length; i < len; i++) {
+	                if (node.children[i]) {
+	                    return false;
+	                }
+	            }
+	            return true;
+	        }
 	        static removeChild(node, child) {
 	            if (node.children.includes(child)) {
 	                node.children.splice(node.children.indexOf(child), 1);
@@ -76,20 +86,26 @@
 	        }
 	        static toArray(node) {
 	            const result = [];
-	            TreeNode.traverse(node, ARRAY_VISITOR, result);
+	            TreeNode.traversePreorder(node, ARRAY_VISITOR, result);
 	            return result;
 	        }
-	        static traverse(node, visitor, rest) {
+	        static traversePostorder(node, visitor, ...rest) {
 	            visitor.enter?.(node, rest);
-	            visitor.visit?.(node, rest);
 	            for (const item of node.children) {
-	                item && TreeNode.traverse(item, visitor, rest);
+	                item && TreeNode.traversePostorder(item, visitor, ...rest);
+	            }
+	            visitor.visit?.(node, ...rest);
+	            visitor.leave?.(node, ...rest);
+	            return node;
+	        }
+	        static traversePreorder(node, visitor, ...rest) {
+	            visitor.enter?.(node, ...rest);
+	            visitor.visit?.(node, ...rest);
+	            for (const item of node.children) {
+	                item && TreeNode.traversePreorder(item, visitor, ...rest);
 	            }
 	            visitor.leave?.(node, rest);
 	            return node;
-	        }
-	        constructor(...rest) {
-	            super(...rest);
 	        }
 	        parent = null;
 	        children = [];
@@ -108,14 +124,20 @@
 	        hasAncestor(ancestor) {
 	            return TreeNode.hasAncestor(this, ancestor);
 	        }
+	        isLeaf() {
+	            return TreeNode.isLeaf(this);
+	        }
 	        removeChild(child) {
 	            return TreeNode.removeChild(this, child);
 	        }
 	        toArray() {
 	            return TreeNode.toArray(this);
 	        }
-	        traverse(visitor, rest) {
-	            return TreeNode.traverse(this, visitor, rest);
+	        traversePostorder(visitor, ...rest) {
+	            return TreeNode.traversePostorder(this, visitor, rest);
+	        }
+	        traversePreorder(visitor, ...rest) {
+	            return TreeNode.traversePreorder(this, visitor, ...rest);
 	        }
 	    };
 	};
@@ -137,44 +159,16 @@
 	        }
 	        return this;
 	    }
-	    traverseInOrder(visitor, rest) {
+	    traverseInorder(visitor, ...rest) {
 	        tmpNode = this.children[0];
 	        visitor.enter?.(this, rest);
 	        if (tmpNode) {
-	            tmpNode.traverseInOrder(visitor, rest);
+	            tmpNode.traverseInorder(visitor, ...rest);
 	        }
 	        visitor.visit?.(this, rest);
 	        tmpNode = this.children[1];
 	        if (tmpNode) {
-	            tmpNode.traverseInOrder(visitor, rest);
-	        }
-	        visitor.leave?.(this, rest);
-	        return this;
-	    }
-	    traversePostOrder(visitor, rest) {
-	        tmpNode = this.children[0];
-	        visitor.enter?.(this, rest);
-	        if (tmpNode) {
-	            tmpNode.traversePostOrder(visitor, rest);
-	        }
-	        tmpNode = this.children[1];
-	        if (tmpNode) {
-	            tmpNode.traversePostOrder(visitor, rest);
-	        }
-	        visitor.visit?.(this, rest);
-	        visitor.leave?.(this, rest);
-	        return this;
-	    }
-	    traversePreOrder(visitor, rest) {
-	        tmpNode = this.children[0];
-	        visitor.enter?.(this, rest);
-	        visitor.visit?.(this, rest);
-	        if (tmpNode) {
-	            tmpNode.traversePreOrder(visitor, rest);
-	        }
-	        tmpNode = this.children[1];
-	        if (tmpNode) {
-	            tmpNode.traversePreOrder(visitor, rest);
+	            tmpNode.traverseInorder(visitor, ...rest);
 	        }
 	        visitor.leave?.(this, rest);
 	        return this;

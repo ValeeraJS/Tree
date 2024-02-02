@@ -6,7 +6,7 @@ export type QuadTreeOptions = {
     boundingRect?: Rectangle2;
     level?: number;
 };
-export declare class QuadTreeNode extends TreeNode<any> {
+export declare class QuadTreeNode extends TreeNode {
     readonly maxDepth: number;
     readonly maxObjects: number;
     readonly boundingRect: Rectangle2;
