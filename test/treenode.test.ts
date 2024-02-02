@@ -42,6 +42,9 @@ describe("treenode api", function () {
 	it("find leaves:", function () {
 		const a = new TreeNode();
 
+		expect(a.isLeaf()).to.equal(true);
+		a.addChild(null);
+		expect(a.isLeaf()).to.equal(true);
 		expect(a.findLeaves()[0]).to.equal(a);
 		const b = new TreeNode();
 		const c = new TreeNode();
@@ -89,7 +92,7 @@ describe("treenode api", function () {
 		expect(b.toArray().length).to.equal(2);
 	});
 	it("traverse:", function () {
-		class NumTree extends TreeNode<NumTree> {
+		class NumTree extends TreeNode {
 			public data: number;
 			public constructor(data: number) {
 				super();
@@ -115,7 +118,9 @@ describe("treenode api", function () {
 			}
 		};
 
-		a.traverse(sumVisitor, result);
+		a.traversePreorder(sumVisitor, result);
+		expect(result.sum).to.equal(6);
+		a.traversePostorder(sumVisitor, result);
 		expect(result.sum).to.equal(6);
 	});
 });
