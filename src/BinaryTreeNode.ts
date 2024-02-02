@@ -2,13 +2,13 @@ import { IBinaryTreeNode } from "./interfaces/IBinaryTreeNode";
 import { IVisitor } from "./interfaces/IVisitor";
 import { TreeNode } from "./TreeNode";
 
-let tmpNode: null | IBinaryTreeNode<any>;
+let tmpNode: null | IBinaryTreeNode;
 
-export type IComparer = (currentNode: IBinaryTreeNode<any>, child: IBinaryTreeNode<any>) => boolean;
+export type IComparer = (currentNode: IBinaryTreeNode, child: IBinaryTreeNode) => boolean;
 
-export abstract class AbstractBinaryTreeNode<T> extends TreeNode<AbstractBinaryTreeNode<T>> implements IBinaryTreeNode<T> {
-	public children: Array<IBinaryTreeNode<T> | null> = [null, null];
-	public parent: IBinaryTreeNode<T> | null = null;
+export abstract class AbstractBinaryTreeNode extends TreeNode implements IBinaryTreeNode {
+	public children: Array<AbstractBinaryTreeNode | null> = [null, null];
+	public parent: AbstractBinaryTreeNode | null = null;
 	private comparer: IComparer;
 
 	public constructor(comparer: IComparer) {
@@ -17,7 +17,7 @@ export abstract class AbstractBinaryTreeNode<T> extends TreeNode<AbstractBinaryT
 		this.comparer = comparer;
 	}
 
-	public removeChild(node: IBinaryTreeNode<T>): this {
+	public removeChild(node: AbstractBinaryTreeNode): this {
 		if (this.children.includes(node)) {
 			this.children[this.children.indexOf(node)] = null;
 			node.parent = null;
@@ -26,58 +26,26 @@ export abstract class AbstractBinaryTreeNode<T> extends TreeNode<AbstractBinaryT
 		return this;
 	}
 
-	public traverseInOrder(visitor: IVisitor<T>, rest: any): this {
+	public traverseInorder(visitor: IVisitor<AbstractBinaryTreeNode>, ...rest: any[]): this {
 		tmpNode = this.children[0];
 		visitor.enter?.(this, rest);
 		if (tmpNode) {
-			tmpNode.traverseInOrder(visitor, rest);
+			tmpNode.traverseInorder(visitor, ...rest);
 		}
 		visitor.visit?.(this, rest);
 		tmpNode = this.children[1];
 		if (tmpNode) {
-			tmpNode.traverseInOrder(visitor, rest);
+			tmpNode.traverseInorder(visitor, ...rest);
 		}
 		visitor.leave?.(this, rest);
 
 		return this;
 	}
 
-	public traversePostOrder(visitor: IVisitor<T>, rest: any): this {
-		tmpNode = this.children[0];
-		visitor.enter?.(this, rest);
-		if (tmpNode) {
-			tmpNode.traversePostOrder(visitor, rest);
-		}
-		tmpNode = this.children[1];
-		if (tmpNode) {
-			tmpNode.traversePostOrder(visitor, rest);
-		}
-		visitor.visit?.(this, rest);
-		visitor.leave?.(this, rest);
-
-		return this;
-	}
-
-	public traversePreOrder(visitor: IVisitor<T>, rest: any): this {
-		tmpNode = this.children[0];
-		visitor.enter?.(this, rest);
-		visitor.visit?.(this, rest);
-		if (tmpNode) {
-			tmpNode.traversePreOrder(visitor, rest);
-		}
-		tmpNode = this.children[1];
-		if (tmpNode) {
-			tmpNode.traversePreOrder(visitor, rest);
-		}
-		visitor.leave?.(this, rest);
-
-		return this;
-	}
-
-	public addChild(node: IBinaryTreeNode<T>): this {
+	public addChild(node: AbstractBinaryTreeNode): this {
 		if (this.compare(node)) {
 			if (this.children[1]) {
-				(this.children[1] as IBinaryTreeNode<T>).addChild(node);
+				this.children[1].addChild(node);
 			} else {
 				if (this.hasAncestor(node)) {
 					throw new Error("The node added is one of the ancestors of current one.");
@@ -87,7 +55,7 @@ export abstract class AbstractBinaryTreeNode<T> extends TreeNode<AbstractBinaryT
 			}
 		} else {
 			if (this.children[0]) {
-				(this.children[0] as IBinaryTreeNode<T>).addChild(node);
+				this.children[0].addChild(node);
 			} else {
 				if (this.hasAncestor(node)) {
 					throw new Error("The node added is one of the ancestors of current one.");
@@ -104,18 +72,18 @@ export abstract class AbstractBinaryTreeNode<T> extends TreeNode<AbstractBinaryT
 	 * 规定左孩子的对比为false，右孩子的对比为true
 	 * @param nodeAdded
 	 */
-	public compare(nodeAdded: IBinaryTreeNode<T>): boolean {
+	public compare(nodeAdded: AbstractBinaryTreeNode): boolean {
 		return this.comparer(this, nodeAdded);
 	}
 
-	public get left(): IBinaryTreeNode<T> | null {
+	public get left(): AbstractBinaryTreeNode | null {
 		return this.children[0];
 	}
 
-	public set left(node: IBinaryTreeNode<T> | null) {
+	public set left(node: AbstractBinaryTreeNode | null) {
 		tmpNode = this.children[0];
 		if (tmpNode) {
-			this.removeChild(tmpNode);
+			this.removeChild(tmpNode as AbstractBinaryTreeNode);
 		}
 		this.children[0] = node;
 
@@ -124,14 +92,14 @@ export abstract class AbstractBinaryTreeNode<T> extends TreeNode<AbstractBinaryT
 		}
 	}
 
-	public get right(): IBinaryTreeNode<T> | null {
+	public get right(): AbstractBinaryTreeNode | null {
 		return this.children[1];
 	}
 
-	public set right(node: IBinaryTreeNode<T> | null) {
+	public set right(node: AbstractBinaryTreeNode | null) {
 		tmpNode = this.children[1];
 		if (tmpNode) {
-			this.removeChild(tmpNode);
+			this.removeChild(tmpNode as AbstractBinaryTreeNode);
 		}
 		this.children[1] = node;
 
